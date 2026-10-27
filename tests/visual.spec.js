@@ -52,7 +52,7 @@ async function productId(page, name) {
 
 const CASES = [
   { ref: '01-calendar.html', url: '/' },
-  { ref: '01a-calendar-login.html', url: '/', act: (p) => p.getByRole('button', { name: 'Редактировать направления (вход для администратора)' }).click() },
+  { ref: '01a-calendar-login.html', url: '/', act: (p) => p.getByRole('button', { name: 'Вход для администратора' }).click() },
   { ref: '01b-calendar-admin.html', url: '/', admin: true },
   {
     // В эталоне свёрнуты «Серверы» и «Системы хранения данных»

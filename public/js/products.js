@@ -1,7 +1,7 @@
 import {
   MGEN, KEY_PRE, KEY_SUPPORT, esc, capitalize, pluralProducts, pluralDirections, storage, store,
   loadState, gaStage, stageOf, selectedYear, monthName, rangeName, materialsText, ICON, openNav, collapsedNav,
-  navClosed, toggleNav, bottomNav, searchBox, chipSelect, addProductButton, editProductButton, loginModal,
+  navClosed, toggleNav, bottomNav, searchBox, chipSelect, addProductButton, editProductButton, headerRight, loginModal,
   wireLogin, focusLogin, renderKeepingFocus,
 } from './common.js';
 import { openProductModal } from './modal-product.js';
@@ -23,12 +23,10 @@ function sidebar() {
     return `
         <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; min-height: 32px; cursor: pointer;"><input type="checkbox" data-role="dir-filter" data-id="${d.id}"${off.includes(d.id) ? '' : ' checked'} style="width: 16px; height: 16px; accent-color: #0000FF; flex: none; margin: 0;"><span style="flex: 1; min-width: 0; line-height: 1.3;">${esc(d.name)}</span><span style="font-size: 13px; color: #5C5C73;">${n}</span></label>`;
   }).join('');
-  const loginBtn = state.isAdmin ? '' : `
-          <button type="button" data-action="open-login" aria-label="Режим администратора: добавить или изменить продукты" style="width: 32px; height: 32px; border: 0; border-radius: 6px; background: transparent; color: #5C5C73; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.pencil}</button>`;
   return `
     <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 8px;">
       <div style="display: flex; align-items: center; min-height: 32px;">
-        <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Направления</span>${loginBtn}
+        <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Направления</span>
       </div>${dirs}
     </div>
     <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 8px;">
@@ -86,7 +84,7 @@ function rows() {
 
 function render() {
   const dirsUsed = new Set(state.products.map((p) => p.directionId)).size;
-  const nav = navClosed() ? collapsedNav('products') : openNav('products', sidebar(), state.isAdmin);
+  const nav = navClosed() ? collapsedNav('products') : openNav('products', sidebar());
   const html = `<div class="has-bottom-nav" style="font-family: 'TT Norms Pro', Manrope, system-ui, sans-serif; color: #000000; background: #F2F2FE; display: flex; flex-wrap: wrap; min-height: 1100px; box-sizing: border-box; position: relative;">
   ${nav}
 
@@ -96,8 +94,8 @@ function render() {
         <h1 style="margin: 0; font-size: 36px; font-weight: 400; line-height: 1;">Все продукты</h1>
         <span style="font-size: 15px; color: #44445C;">${pluralProducts(state.products.length)} · ${pluralDirections(dirsUsed)} · сроки на ${year} год</span>
       </div>
-      ${searchBox('Поиск продукта', 'Найти продукт', search)}
-      ${state.isAdmin ? addProductButton() : ''}
+      ${headerRight(state.isAdmin, `${searchBox('Поиск продукта', 'Найти продукт', search)}
+        ${state.isAdmin ? addProductButton() : ''}`)}
     </header>
 
     <div style="display: flex; flex-wrap: wrap; gap: 8px;">

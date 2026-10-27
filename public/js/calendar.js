@@ -2,7 +2,7 @@ import {
   MSHORT, MNOM, MGEN, KEY_PRE, KEY_SUPPORT, esc, pluralProducts, pluralDirections, ym, today, storage, store, api,
   isMobile, onMobileChange, loadState, gaStage, stageOf, inYear, selectedYear, setYear, rangeName,
   statusCss, swatchCss, contrastText, ICON, openNav, collapsedNav, navClosed, toggleNav, bottomNav, searchBox,
-  addProductButton, editProductButton, loginModal, wireLogin, focusLogin, renderKeepingFocus,
+  addProductButton, editProductButton, headerRight, loginModal, wireLogin, focusLogin, renderKeepingFocus,
 } from './common.js';
 import { openProductModal } from './modal-product.js';
 
@@ -106,8 +106,6 @@ function renderMobile() {
 function sidebarSections(products) {
   const admin = state.isAdmin;
   const off = dirFilter();
-  const loginBtn = (what) => `
-          <button type="button" data-action="open-login" aria-label="Редактировать ${what} (вход для администратора)" style="width: 32px; height: 32px; border: 0; border-radius: 6px; background: transparent; color: #5C5C73; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.pencil}</button>`;
   const smallBtn = (action, id, label, icon) => `<button type="button" data-action="${action}" data-id="${id}" aria-label="${label}" style="flex: none; width: 32px; height: 32px; border: 0; border-radius: 6px; background: transparent; color: #44445C; display: flex; align-items: center; justify-content: center; cursor: pointer;">${icon}</button>`;
   const addRow = (role, label, btnLabel) => `
       <div style="display: flex; gap: 6px; margin-top: 4px;">
@@ -154,13 +152,13 @@ function sidebarSections(products) {
   return `
     <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 8px;">
       <div style="display: flex; align-items: center; min-height: 32px;">
-        <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Направления</span>${admin ? '' : loginBtn('направления')}
+        <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Направления</span>
       </div>${dirs}${admin ? addRow('add-direction', 'Новое направление', 'Добавить направление') : ''}
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 8px;">
       <div style="display: flex; align-items: center; min-height: 32px;">
-        <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Статусы</span>${admin ? '' : loginBtn('статусы')}
+        <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Статусы</span>
       </div>${statuses}${admin ? addRow('add-status', 'Новый статус', 'Добавить статус') : ''}
     </div>
 
@@ -260,7 +258,7 @@ function upcoming(products) {
 function renderDesktop() {
   const products = yearProducts();
   const dirsUsed = new Set(products.map((p) => p.directionId)).size;
-  const nav = navClosed() ? collapsedNav('calendar') : openNav('calendar', sidebarSections(products), state.isAdmin);
+  const nav = navClosed() ? collapsedNav('calendar') : openNav('calendar', sidebarSections(products));
   const legend = state.statuses.map((s) => `
         <span style="display: flex; align-items: center; gap: 8px;"><span style="width: 18px; height: 10px; border-radius: 2px; ${swatchCss(s)}"></span>${esc(s.name)}</span>`).join('');
   const months = MSHORT.map((n) => `
@@ -288,10 +286,8 @@ function renderDesktop() {
           <span>${pluralProducts(products.length)} · ${pluralDirections(dirsUsed)}</span>
         </div>
       </div>
-      <div style="position: relative; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-        ${searchBox('Поиск', 'Найти продукт', search)}
-        ${state.isAdmin ? addProductButton() : ''}
-      </div>
+      ${headerRight(state.isAdmin, `${searchBox('Поиск', 'Найти продукт', search)}
+        ${state.isAdmin ? addProductButton() : ''}`)}
     </header>
 
     <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">

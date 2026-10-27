@@ -238,18 +238,12 @@ export function collapsedNav(active, withToggle = true) {
   </nav>`;
 }
 
-// Развёрнутая панель: логотип, плашка администратора, меню и разделы страницы
-export function openNav(active, sectionsHtml, adminPlaque) {
+// Развёрнутая панель: логотип, меню и разделы страницы
+export function openNav(active, sectionsHtml) {
   const links = NAV_ITEMS.map((n) => {
     const on = n.key === active;
     return `<a href="${n.href}" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; ${on ? 'background: #F2F2FE; color: #0000FF; font-weight: 500;' : 'color: #000000;'} font-size: 15px; text-decoration: none;">${ICON[n.icon + '18']}${n.label}</a>`;
   }).join('\n      ');
-  const plaque = adminPlaque ? `
-    <div style="display: flex; align-items: center; gap: 8px; background: #0000FF; color: #FFFFFF; border-radius: 8px; padding: 8px 8px 8px 12px; margin-top: -8px;">
-      ${ICON.shield}
-      <span style="font-size: 13px; font-weight: 500; margin-right: auto;">Режим администратора</span>
-      <button type="button" data-action="logout" style="height: 32px; padding: 0 10px; border: 0; border-radius: 6px; background: #FFFFFF; font: inherit; font-size: 12px; font-weight: 500; color: #0000FF; cursor: pointer;">Выйти</button>
-    </div>` : '';
   return `<nav class="main-nav" aria-label="Основное меню" style="flex: 1 1 256px; max-width: 280px; min-width: 232px; background: #FFFFFF; border-right: 1px solid #E0E0F5; padding: 22px 16px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px;">
     <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px;">
       <div style="display: flex; flex-direction: column; gap: 8px; margin-right: auto;">
@@ -258,12 +252,33 @@ export function openNav(active, sectionsHtml, adminPlaque) {
       </div>
       <button type="button" data-action="toggle-nav" aria-label="Свернуть панель" style="width: 40px; height: 40px; border: 0; border-radius: 8px; background: #F2F2FE; color: #44445C; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16M15 10l-2 2 2 2"></path></svg></button>
     </div>
-${plaque}
     <div style="display: flex; flex-direction: column; gap: 2px;">
       ${links}
     </div>
 ${sectionsHtml}
   </nav>`;
+}
+
+// Вход для администратора — справа вверху шапки, под ним поиск и кнопки страницы.
+// После входа на месте кнопки — плашка «Режим администратора» с кнопкой «Выйти»
+export function headerRight(isAdmin, controlsHtml) {
+  return `<div style="position: relative; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; max-width: 100%;">
+        ${adminHeaderControl(isAdmin)}
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: flex-end; max-width: 100%;">
+        ${controlsHtml}
+        </div>
+      </div>`;
+}
+
+function adminHeaderControl(isAdmin) {
+  if (isAdmin) {
+    return `<div style="display: flex; align-items: center; gap: 8px; height: 44px; box-sizing: border-box; background: #0000FF; color: #FFFFFF; border-radius: 8px; padding: 0 6px 0 12px;">
+          ${ICON.shield}
+          <span style="font-size: 13px; font-weight: 500;">Режим администратора</span>
+          <button type="button" data-action="logout" style="height: 32px; padding: 0 10px; border: 0; border-radius: 6px; background: #FFFFFF; font: inherit; font-size: 12px; font-weight: 500; color: #0000FF; cursor: pointer;">Выйти</button>
+        </div>`;
+  }
+  return `<button type="button" data-action="open-login" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid #8A8AC2; border-radius: 8px; background: #FFFFFF; font: inherit; font-size: 14px; color: #000000; cursor: pointer;">${ICON.shield.replace('width="16" height="16"', 'width="18" height="18"')}Вход для администратора</button>`;
 }
 
 // Нижнее меню на телефоне

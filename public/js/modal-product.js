@@ -7,7 +7,7 @@ const ROW_INPUT = 'width: 100%; box-sizing: border-box; height: 44px; border: 1p
 const ROW_DATE = 'width: 100%; box-sizing: border-box; height: 44px; border: 1px solid #8A8AC2; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 15px; color: #000000; background: #FFFFFF;';
 const STAGE_GRID = 'display: grid; grid-template-columns: minmax(0, 1.4fr) 1fr 1fr 40px; gap: 10px;';
 const TEAM_GRID = 'display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.4fr) 40px; gap: 10px;';
-const CONTACT_HINTS = ['https://t.me/…', 'имя@yadro.com'];
+const CONTACT_HINTS = ['@логин в Mattermost', 'имя@yadro.com'];
 
 function rowButton(action, label, i) {
   return `<button type="button" data-action="${action}" data-i="${i}" aria-label="${esc(label)}" style="width: 40px; height: 40px; border: 0; border-radius: 6px; background: transparent; color: #44445C; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.trash}</button>`;
@@ -126,7 +126,7 @@ export async function openProductModal(state, { year, productId = null, directio
         <div style="${TEAM_GRID} font-size: 13px; color: #5C5C73; padding: 0 2px;"><span>ФИО</span><span>Роль</span><span>Как связаться</span><span></span></div>${teamHtml()}
         <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px;">
           <button type="button" data-action="add-member" style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 4px; border: 0; background: transparent; font: inherit; font-size: 14px; color: #0000FF; cursor: pointer;">${ICON.plus16}Добавить участника</button>
-          <span style="font-size: 12px; color: #5C5C73;">Ссылка: Telegram (t.me/…), почта (имя@yadro.com) или профиль в корпоративном мессенджере</span>
+          <span style="font-size: 12px; color: #5C5C73;">Ссылка: Mattermost (@логин или ссылка на личные сообщения), почта (имя@yadro.com) или Telegram (t.me/…)</span>
         </div>
       </div>
 

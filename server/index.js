@@ -90,7 +90,7 @@ api.get('/state', (req, res) => {
     links: countBy[p.id] ? countBy[p.id].links : 0,
     files: countBy[p.id] ? countBy[p.id].files : 0,
   }));
-  res.json({ admin: (req.session && req.session.admin) || null, categories: CATEGORIES, directions, statuses, products });
+  res.json({ admin: (req.session && req.session.admin) || null, mattermostUrl: config.MATTERMOST_URL, categories: CATEGORIES, directions, statuses, products });
 });
 
 api.get('/products/:id', (req, res) => {

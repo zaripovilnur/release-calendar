@@ -20,5 +20,7 @@ module.exports = {
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || 'admin',
   UPLOAD_DIR: fromRoot(process.env.UPLOAD_DIR || './storage/uploads'),
   MAX_UPLOAD_MB: Number(process.env.MAX_UPLOAD_MB) || 200,
+  // Адрес Mattermost с командой, например https://mattermost.yadro.com/yadro — тогда в команде продукта хватит «@логин»
+  MATTERMOST_URL: (process.env.MATTERMOST_URL || '').trim().replace(/\/+$/, ''),
   DB_FILE: fromRoot(process.env.DB_FILE || './storage/app.db'),
 };

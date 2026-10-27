@@ -197,6 +197,14 @@ export function stageSpan(st, year, offset = 0, gap = 0) {
   return { from, to, css: `grid-column: ${from + offset} / ${to + offset + 1}; grid-row: 1;`, margin, partial: !!(startShare || endShare) };
 }
 
+// GA, отмеченный «Релиз состоялся», — зелёный вместо синего. Белый текст на нём — контраст 4.6:1
+export const RELEASED_GREEN = '#00873C';
+export function stageStatus(state, product, st) {
+  const s = state.statusById[st.statusId];
+  if (!s || !s.isRelease || !product.releasedAt) return s;
+  return { ...s, background: RELEASED_GREEN, color: '#FFFFFF', border: null };
+}
+
 // Стиль полоски этапа: фон, текст, обводка
 export function statusCss(s) {
   return `background: ${s.background}; color: ${s.color};${s.border ? ` box-shadow: inset 0 0 0 1.5px ${s.border};` : ''}`;

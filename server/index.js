@@ -80,11 +80,12 @@ api.get('/state', (req, res) => {
   const stages = db.prepare('SELECT product_id, status_id, from_date, to_date FROM stages ORDER BY from_date, id').all();
   const counts = db.prepare("SELECT product_id, SUM(kind = 'link') AS links, SUM(kind = 'file') AS files FROM materials GROUP BY product_id").all();
   const countBy = Object.fromEntries(counts.map((c) => [c.product_id, c]));
-  const products = db.prepare('SELECT id, name, direction_id, description FROM products ORDER BY id').all().map((p) => ({
+  const products = db.prepare('SELECT id, name, direction_id, description, released_at FROM products ORDER BY id').all().map((p) => ({
     id: p.id,
     name: p.name,
     directionId: p.direction_id,
     description: p.description,
+    releasedAt: p.released_at,
     stages: stages.filter((s) => s.product_id === p.id).map((s) => ({ statusId: s.status_id, from: s.from_date, to: s.to_date })),
     links: countBy[p.id] ? countBy[p.id].links : 0,
     files: countBy[p.id] ? countBy[p.id].files : 0,
@@ -271,6 +272,15 @@ api.put('/products/:id', requireAdmin, (req, res) => {
     }
   })();
   res.json({ id });
+});
+
+// «Релиз состоялся»: поставить или снять отметку
+api.post('/products/:id/release', requireAdmin, (req, res) => {
+  const id = toId(req.params.id);
+  if (!id || !db.prepare('SELECT 1 FROM products WHERE id = ?').get(id)) return bad(res, 'Продукт не найден', 404);
+  const released = !!(req.body && req.body.released);
+  db.prepare('UPDATE products SET released_at = ? WHERE id = ?').run(released ? nowLocal() : null, id);
+  res.json({ ok: true });
 });
 
 api.delete('/products/:id', requireAdmin, (req, res) => {

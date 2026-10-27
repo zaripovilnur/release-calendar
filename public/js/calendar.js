@@ -1,6 +1,6 @@
 import {
   MSHORT, MNOM, MGEN, KEY_PRE, KEY_SUPPORT, esc, pluralProducts, pluralDirections, ym, today, storage, store, api,
-  isMobile, onMobileChange, loadState, gaStage, stageOf, inYear, selectedYear, setYear, rangeName, stageSpan,
+  isMobile, onMobileChange, loadState, gaStage, stageOf, inYear, selectedYear, setYear, rangeName, stageSpan, stageStatus, RELEASED_GREEN,
   statusCss, swatchCss, contrastText, ICON, openNav, collapsedNav, navClosed, toggleNav, bottomNav, searchBox,
   addProductButton, editProductButton, headerRight, loginModal, wireLogin, focusLogin, renderKeepingFocus,
 } from './common.js';
@@ -188,7 +188,7 @@ function tableRows(products) {
       for (let i = 1; i <= 12; i++) cells += `\n                <div style="grid-column: ${i + 1}; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>`;
       const segs = p.stages.map((st) => {
         const c = stageSpan(st, year, 1, 2);
-        const s = state.statusById[st.statusId];
+        const s = stageStatus(state, p, st);
         if (!c || !s) return '';
         // Этап не целыми месяцами: полоска короче колонок, подпись с датами — при наведении
         const tip = c.partial ? ` title="${esc(s.name)}: ${esc(rangeName(st, year))}"` : '';
@@ -251,7 +251,10 @@ function renderDesktop() {
   const dirsUsed = new Set(products.map((p) => p.directionId)).size;
   const nav = navClosed() ? collapsedNav('calendar') : openNav('calendar', sidebarSections(products));
   const legend = state.statuses.map((s) => `
-        <span style="display: flex; align-items: center; gap: 8px;"><span style="width: 18px; height: 10px; border-radius: 2px; ${swatchCss(s)}"></span>${esc(s.name)}</span>`).join('');
+        <span style="display: flex; align-items: center; gap: 8px;"><span style="width: 18px; height: 10px; border-radius: 2px; ${swatchCss(s)}"></span>${esc(s.name)}</span>`).join('')
+    // Зелёный в легенде — только когда в этом году есть состоявшиеся релизы
+    + (state.release && products.some((p) => p.releasedAt) ? `
+        <span style="display: flex; align-items: center; gap: 8px;"><span style="width: 18px; height: 10px; border-radius: 2px; background: ${RELEASED_GREEN};"></span>${esc(state.release.name)} состоялся</span>` : '');
   const months = MSHORT.map((n) => `
             <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">${n}</div>`).join('');
   const html = `<div style="font-family: 'TT Norms Pro', Manrope, system-ui, sans-serif; color: #000000; background: #F2F2FE; display: flex; flex-wrap: wrap; min-height: 1400px; box-sizing: border-box; position: relative;">

@@ -1,6 +1,6 @@
 import {
   MSHORT, KEY_PRE, KEY_SUPPORT, esc, plural, ym, today, api, isMobile, onMobileChange,
-  loadState, gaStage, stageOf, selectedYear, rangeName, sinceName, stageSpan, swatchCss, shortDate, categoryShort, fileExt,
+  loadState, gaStage, stageOf, selectedYear, rangeName, sinceName, stageSpan, stageStatus, RELEASED_GREEN, swatchCss, shortDate, categoryShort, fileExt,
   stripExt, collapsedNav, ICON,
 } from './common.js';
 import { openMaterialModal } from './modal-material.js';
@@ -12,6 +12,7 @@ let product = null;
 let details = null;
 
 function countdown(ga) {
+  if (product.releasedAt) return `релиз состоялся ${shortDate(product.releasedAt)}`;
   const now = today();
   const { y, m } = ym(ga.from);
   const diff = (y - now.y) * 12 + (m - now.m);
@@ -39,7 +40,7 @@ function cardYear() {
 
 function strip(year, height) {
   return product.stages.map((st) => {
-    const s = state.statusById[st.statusId];
+    const s = stageStatus(state, product, st);
     const c = stageSpan(st, year);
     if (!s || !c) return '';
     return `
@@ -52,6 +53,20 @@ function deleteButton(m, sizeCss) {
   const label = m.kind === 'file' ? 'Удалить файл' : 'Удалить ссылку';
   return `<button type="button" data-action="delete-material" data-id="${m.id}" aria-label="${label}" style="${sizeCss} padding: 0; border: 0; border-radius: 6px; background: transparent; color: #44445C; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.trash}</button>`;
 }
+
+// Кнопка администратора «Релиз состоялся» — только у продуктов с этапом GA. Повторное нажатие снимает отметку
+function releaseButton() {
+  if (!state.isAdmin || !gaStage(state, product)) return '';
+  const check = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"></path></svg>';
+  if (product.releasedAt) {
+    return `
+          <button type="button" data-action="release" data-released="0" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid #8A8AC2; border-radius: 8px; background: #FFFFFF; font: inherit; font-size: 14px; color: #000000; cursor: pointer;">Снять отметку о релизе</button>`;
+  }
+  return `
+          <button type="button" data-action="release" data-released="1" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 0; border-radius: 8px; background: ${RELEASED_GREEN}; font: inherit; font-size: 14px; font-weight: 500; color: #FFFFFF; cursor: pointer;">${check}Релиз состоялся</button>`;
+}
+
+const gaBackground = () => (product.releasedAt ? RELEASED_GREEN : '#0000FF');
 
 const pinnedLinks = () => details.materials.filter((m) => m.kind === 'link' && m.pinned);
 const files = () => details.materials.filter((m) => m.kind === 'file');
@@ -67,7 +82,7 @@ function renderDesktop() {
 
   const plaques = [
     pre ? `<div style="background: #F2F2FE; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; color: #44445C;">Pre-GA</span><span style="font-size: 20px;">${esc(rangeName(pre, year))}</span></div>` : '',
-    ga ? `<div style="background: #0000FF; color: #FFFFFF; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px;">Выход в GA</span><span style="font-size: 20px;">${esc(rangeName(ga, null))}</span><span style="font-size: 13px;">${countdown(ga)}</span></div>` : '',
+    ga ? `<div style="background: ${gaBackground()}; color: #FFFFFF; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px;">Выход в GA</span><span style="font-size: 20px;">${esc(rangeName(ga, null))}</span><span style="font-size: 13px;">${countdown(ga)}</span></div>` : '',
     sup ? `<div style="background: #F2F2FE; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; color: #44445C;">Поддержка продаж</span><span style="font-size: 20px;">с ${esc(sinceName(sup, year))}</span></div>` : '',
   ].filter(Boolean).join('\n          ');
 
@@ -132,7 +147,7 @@ function renderDesktop() {
             <span style="font-size: 14px; color: #44445C;">${esc(dir ? dir.name : '')}</span>
             <h1 style="margin: 0; font-size: 48px; font-weight: 300; line-height: 1;">${esc(product.name)}</h1>${product.description ? `
             <span style="font-size: 15px; color: #44445C; max-width: 560px; line-height: 1.5;">${esc(product.description)}</span>` : ''}
-          </div>
+          </div>${releaseButton()}
           <button type="button" data-action="copy-link" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid #8A8AC2; border-radius: 8px; background: #FFFFFF; font: inherit; font-size: 14px; color: #000000; cursor: pointer;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"></path><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg>Скопировать ссылку</button>
         </div>${plaques ? `
         <div style="position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
@@ -201,11 +216,11 @@ function renderMobile() {
   const ga = gaStage(state, product);
   const sup = stageOf(state, product, KEY_SUPPORT);
   const plaque = (label, value, blue) => blue
-    ? `<div style="background: #0000FF; color: #FFFFFF; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px;">${label}</span><span style="font-size: 14px;">${esc(value)}</span></div>`
+    ? `<div style="background: ${gaBackground()}; color: #FFFFFF; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px;">${label}</span><span style="font-size: 14px;">${esc(value)}</span></div>`
     : `<div style="background: #F2F2FE; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px; color: #44445C;">${label}</span><span style="font-size: 14px;">${esc(value)}</span></div>`;
   const plaques = [
     pre ? plaque('Pre-GA', rangeName(pre, year, true), false) : '',
-    ga ? plaque('GA', rangeName(ga, year, true), true) : '',
+    ga ? plaque('GA', rangeName(ga, year), true) : '',
     sup ? plaque('Поддержка', 'с ' + sinceName(sup, year, true), false) : '',
   ].filter(Boolean).join('\n      ');
   const links = pinnedLinks().map((m) => {
@@ -288,6 +303,18 @@ root.addEventListener('click', async (e) => {
       if (!confirm(question)) break;
       try {
         await api(`/api/materials/${m.id}`, { method: 'DELETE' });
+      } catch (err) {
+        alert(err.status === 401 ? 'Войдите как администратор' : err.message);
+      }
+      await reload();
+      break;
+    }
+    case 'release': {
+      const released = t.dataset.released === '1';
+      const question = released ? `Отметить, что релиз «${product.name}» состоялся?` : `Снять отметку о релизе «${product.name}»?`;
+      if (!confirm(question)) break;
+      try {
+        await api(`/api/products/${productId}/release`, { method: 'POST', body: { released } });
       } catch (err) {
         alert(err.status === 401 ? 'Войдите как администратор' : err.message);
       }

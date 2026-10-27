@@ -1,6 +1,6 @@
 import {
   KEY_PRE, KEY_SUPPORT, esc, capitalize, pluralProducts, pluralDirections, storage, store,
-  loadState, gaStage, stageOf, selectedYear, rangeName, sinceName, materialsText, ICON, openNav, collapsedNav,
+  loadState, gaStage, stageOf, selectedYear, rangeName, sinceName, RELEASED_GREEN, materialsText, ICON, openNav, collapsedNav,
   navClosed, toggleNav, bottomNav, searchBox, chipSelect, addProductButton, editProductButton, headerRight, loginModal,
   wireLogin, focusLogin, renderKeepingFocus,
 } from './common.js';
@@ -73,7 +73,7 @@ function rows() {
                 <a href="/products/${p.id}" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none; margin-right: auto;">${esc(p.name)}</a>${admin ? editProductButton(p.id) : ''}
               </div>
               ${pre ? `<span style="color: #0000FF;">${esc(rangeName(pre, year))}</span>` : GREY}
-              ${ga ? `<span style="justify-self: start; font-size: 13px; padding: 5px 10px; border-radius: 4px; background: #0000FF; color: #FFFFFF;">${esc(capitalize(rangeName(ga, year)))}</span>` : GREY}
+              ${ga ? `<span style="justify-self: start; font-size: 13px; padding: 5px 10px; border-radius: 4px; background: ${p.releasedAt ? RELEASED_GREEN : '#0000FF'}; color: #FFFFFF;">${esc(capitalize(rangeName(ga, year)))}</span>` : GREY}
               ${sup ? `<span style="color: #44445C;">с ${esc(sinceName(sup, year))}</span>` : GREY}
               ${mat ? `<a href="/products/${p.id}" style="color: #000000; text-decoration: none;">${mat}</a>` : `<button type="button" data-action="add-material" data-id="${p.id}" style="display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: transparent; font: inherit; color: #0000FF; font-weight: 500; cursor: pointer;">${ICON.plus14}Добавить</button>`}
             </div>`;

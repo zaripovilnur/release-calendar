@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS products (
   name TEXT NOT NULL,
   direction_id INTEGER NOT NULL REFERENCES directions(id),
   description TEXT NOT NULL DEFAULT '',
+  released_at TEXT NULL,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
@@ -105,6 +106,12 @@ function migrateStagesToDates(db) {
   })();
 }
 
+// Отметка «Релиз состоялся»: дата, когда администратор её поставил. В старых базах колонки нет — добавляем
+function addReleasedAt(db) {
+  const cols = db.prepare("SELECT name FROM pragma_table_info('products')").all().map((c) => c.name);
+  if (!cols.includes('released_at')) db.exec('ALTER TABLE products ADD COLUMN released_at TEXT NULL');
+}
+
 function open() {
   fs.mkdirSync(path.dirname(config.DB_FILE), { recursive: true });
   const db = new Database(config.DB_FILE);
@@ -112,6 +119,7 @@ function open() {
   db.pragma('foreign_keys = ON');
   migrateStagesToDates(db);
   db.exec(SCHEMA);
+  addReleasedAt(db);
   return db;
 }
 

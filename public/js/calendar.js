@@ -1,5 +1,5 @@
 import {
-  MSHORT, MNOM, MGEN, KEY_PRE, KEY_SUPPORT, esc, pluralProducts, pluralDirections, ym, today, storage, store, api,
+  MSHORT, MNOM, MGEN, KEY_PRE, esc, plural, pluralProducts, materialsText, pluralDirections, ym, today, storage, store, api,
   isMobile, onMobileChange, loadState, gaStage, stageOf, inYear, selectedYear, setYear, rangeName, stageSpan, stageStatus, RELEASED_GREEN,
   statusCss, swatchCss, contrastText, ICON, openNav, collapsedNav, navClosed, toggleNav, bottomNav, searchBox,
   addProductButton, editProductButton, headerRight, loginModal, wireLogin, focusLogin, renderKeepingFocus,
@@ -32,12 +32,12 @@ function yearProducts() {
     .sort((a, b) => (gaMonth(a) || 13) - (gaMonth(b) || 13) || a.id - b.id);
 }
 
-// План для карточек «Ближайшие выходы в GA»
-function planText(p) {
-  const pre = stageOf(state, p, KEY_PRE);
-  const sup = stageOf(state, p, KEY_SUPPORT);
-  const first = pre ? `Pre-GA: ${rangeName(pre, ym(pre.from).y)}` : 'Без этапа Pre-GA';
-  return first + (sup ? '. После GA — поддержка продаж' : '');
+// Срок до выхода в GA для карточек «Ближайшие выходы в GA»
+function untilText(m) {
+  const now = today();
+  const diff = (year - now.y) * 12 + (m - now.m);
+  if (diff > 0) return 'через ' + plural(diff, 'месяц', 'месяца', 'месяцев');
+  return diff === 0 ? 'в этом месяце' : 'срок прошёл';
 }
 
 // ---------- Телефон ----------
@@ -236,28 +236,36 @@ function todayLine() {
           <div role="img" aria-label="${label}" title="${label}" style="position: absolute; top: 0; bottom: 0; left: calc(248px + (100% - 248px) * ${share.toFixed(5)} - 1px); width: 2px; background: #FF3B30; z-index: 3; pointer-events: none;"></div>`;
 }
 
+// «Ближайшие выходы в GA»: три месяца начиная с текущего (или с января выбранного года),
+// без релизов, отмеченных «Релиз состоялся». В карточке — сколько осталось и есть ли материалы
+const UPCOMING_MONTHS = 3;
+
 function upcoming(products) {
   const now = today();
   const startM = now.y > year ? 13 : now.y < year ? 1 : now.m;
-  const endM = Math.min(startM + 5, 12);
-  const list = products.map((p) => ({ p, m: gaMonth(p) })).filter((x) => x.m && x.m >= startM && x.m <= endM)
+  const endM = Math.min(startM + UPCOMING_MONTHS - 1, 12);
+  const list = products.map((p) => ({ p, m: gaMonth(p) }))
+    .filter((x) => x.m && x.m >= startM && x.m <= endM && !x.p.releasedAt)
     .sort((a, b) => a.m - b.m || a.p.id - b.p.id);
-  const subtitle = startM > 12 ? '' : startM === 1 && endM === 6 ? `первое полугодие ${year}` : `${MNOM[startM - 1]} – ${MNOM[endM - 1]} ${year}`;
+  const subtitle = startM > 12 ? '' : startM === endM ? `${MNOM[startM - 1]} ${year}` : `${MNOM[startM - 1]} – ${MNOM[endM - 1]} ${year}`;
   const cards = list.map(({ p, m }) => {
     const dir = state.directionById[p.directionId];
+    const materials = materialsText(p.links, p.files);
     return `
         <a href="/products/${p.id}" style="display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; border-radius: 12px; padding: 20px; color: #000000; text-decoration: none;">
           <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 28px; font-weight: 400; color: #0000FF; line-height: 1;">${MSHORT[m - 1]}</span><span style="font-size: 14px; color: #5C5C73;">${year}</span></div>
           <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 16px; font-weight: 300; line-height: 1.25;">${esc(p.name)}</span><span style="font-size: 13px; color: #5C5C73;">${esc(dir ? dir.name : '')}</span></div>
-          <div style="font-size: 13px; color: #44445C; line-height: 1.5; border-top: 1px solid #E0E0F5; padding-top: 12px;">${esc(planText(p))}</div>
+          <div style="font-size: 13px; color: #44445C; line-height: 1.5; border-top: 1px solid #E0E0F5; padding-top: 12px;">${untilText(m)} · ${materials ? materials : '<span style="color: #0000FF; font-weight: 500;">материалов нет</span>'}</div>
         </a>`;
   }).join('');
+  const empty = !list.length && startM <= 12 ? `
+      <span style="font-size: 14px; color: #5C5C73;">В эти месяцы выходов в GA нет</span>` : '';
   return `
     <div style="display: flex; align-items: baseline; gap: 12px; margin-top: 12px;">
       <h2 style="margin: 0; font-size: 24px; font-weight: 400;">Ближайшие выходы в GA</h2>
       <span style="font-size: 14px; color: #5C5C73;">${subtitle}</span>
     </div>
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px;">${cards}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px;">${cards}${empty}
     </div>`;
 }
 

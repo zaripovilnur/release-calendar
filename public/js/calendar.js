@@ -1,5 +1,5 @@
 import {
-  MSHORT, MNOM, KEY_PRE, KEY_SUPPORT, esc, pluralProducts, pluralDirections, ym, today, storage, store, api,
+  MSHORT, MNOM, MGEN, KEY_PRE, KEY_SUPPORT, esc, pluralProducts, pluralDirections, ym, today, storage, store, api,
   isMobile, onMobileChange, loadState, gaStage, stageOf, inYear, selectedYear, setYear, rangeName,
   statusCss, swatchCss, contrastText, ICON, openNav, collapsedNav, navClosed, toggleNav, bottomNav, searchBox,
   addProductButton, editProductButton, loginModal, wireLogin, focusLogin, renderKeepingFocus,
@@ -220,6 +220,18 @@ function tableRows(products) {
   return html;
 }
 
+// Красная линия «сегодня» поверх строк — только в календаре текущего года.
+// Стоит внутри месяца пропорционально дню: 27 октября — почти у правого края «Окт»
+function todayLine() {
+  const now = today();
+  if (now.y !== year) return '';
+  const days = new Date(now.y, now.m, 0).getDate();
+  const share = (now.m - 1 + (now.d - 0.5) / days) / 12;
+  const label = `Сегодня, ${now.d} ${MGEN[now.m - 1]}`;
+  return `
+          <div role="img" aria-label="${label}" title="${label}" style="position: absolute; top: 0; bottom: 0; left: calc(248px + (100% - 248px) * ${share.toFixed(5)} - 1px); width: 2px; background: #FF3B30; z-index: 2; pointer-events: none;"></div>`;
+}
+
 function upcoming(products) {
   const now = today();
   const startM = now.y > year ? 13 : now.y < year ? 1 : now.m;
@@ -293,7 +305,9 @@ function renderDesktop() {
       <div style="min-width: 1000px;">
         <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #E0E0F5;">
           <div style="padding: 16px 20px; font-size: 13px; font-weight: 500; color: #5C5C73;">Продукт</div>${months}
-        </div>${tableRows(products)}
+        </div>
+        <div style="position: relative;">${tableRows(products)}${todayLine()}
+        </div>
       </div>
     </section>
 ${upcoming(products)}

@@ -39,7 +39,7 @@ export function ymStr(y, m) {
 // Сегодня. В визуальных тестах дата фиксируется через page.clock
 export function today() {
   const d = new Date();
-  return { y: d.getFullYear(), m: d.getMonth() + 1 };
+  return { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate() };
 }
 
 // '2026-10-24T…' → '24 окт'

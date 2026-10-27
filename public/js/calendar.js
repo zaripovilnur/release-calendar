@@ -19,7 +19,7 @@ let gaFilter = null; // месяц из блока «Выходы в GA»: в т
 const dirFilter = () => storage('calendarDirsOff', []);
 const collapsedGroups = () => storage('calendarCollapsed', []);
 
-// Этап, обрезанный по выбранному году: месяцы 1..12
+// Месяц GA продукта в выбранном году (1..12) или null
 function gaMonth(p) {
   const ga = gaStage(state, p);
   if (!ga) return null;
@@ -32,12 +32,11 @@ function yearProducts() {
     .sort((a, b) => (gaMonth(a) || 13) - (gaMonth(b) || 13) || a.id - b.id);
 }
 
-// Срок до выхода в GA для карточек «Ближайшие выходы в GA»
+// Срок до выхода в GA для карточек «Ближайшие выходы в GA» (в окне только текущий и будущие месяцы)
 function untilText(m) {
   const now = today();
   const diff = (year - now.y) * 12 + (m - now.m);
-  if (diff > 0) return 'через ' + plural(diff, 'месяц', 'месяца', 'месяцев');
-  return diff === 0 ? 'в этом месяце' : 'срок прошёл';
+  return diff > 0 ? 'через ' + plural(diff, 'месяц', 'месяца', 'месяцев') : 'в этом месяце';
 }
 
 // ---------- Телефон ----------
@@ -449,7 +448,7 @@ root.addEventListener('keydown', (e) => {
 });
 
 wireLogin(root, {
-  openLogin() { showLogin = true; render(); focusLogin(root); },
+  openLogin() { showLogin = true; render(); focusLogin(); },
   closeLogin() { showLogin = false; render(); },
   reload,
 });

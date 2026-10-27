@@ -74,7 +74,7 @@ function seedDemo(db) {
     db.prepare('DELETE FROM team_members WHERE product_id = ?').run(pid);
     db.prepare('DELETE FROM date_history WHERE product_id = ? AND author <> ?').run(pid, IMPORT_AUTHOR);
 
-    db.prepare('UPDATE products SET description = ? WHERE id = ?').run(demo.description || '', pid);
+    db.prepare('UPDATE products SET description = ?, released_at = NULL WHERE id = ?').run(demo.description || '', pid);
 
     const insMember = db.prepare('INSERT INTO team_members (product_id, full_name, role, contact_url, sort) VALUES (?, ?, ?, ?, ?)');
     demo.team.forEach((m, i) => insMember.run(pid, m.fullName, m.role, m.contactUrl, i));

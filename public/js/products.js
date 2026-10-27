@@ -159,7 +159,7 @@ root.addEventListener('input', (e) => {
 });
 
 wireLogin(root, {
-  openLogin() { showLogin = true; render(); focusLogin(root); },
+  openLogin() { showLogin = true; render(); focusLogin(); },
   closeLogin() { showLogin = false; render(); },
   reload,
 });

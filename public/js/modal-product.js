@@ -32,6 +32,7 @@ export async function openProductModal(state, { year, productId = null, directio
     team: details.team.map((m) => ({ ...m })),
     reason: '',
   };
+  let saving = false; // повторное нажатие «Сохранить» не создаёт второй продукт
 
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
@@ -214,6 +215,8 @@ export async function openProductModal(state, { year, productId = null, directio
       alert('Дата начала этапа позже даты окончания');
       return;
     }
+    if (saving) return;
+    saving = true;
     const body = { ...model };
     try {
       if (editing) await api(`/api/products/${productId}`, { method: 'PUT', body });
@@ -222,6 +225,8 @@ export async function openProductModal(state, { year, productId = null, directio
       if (onSaved) onSaved();
     } catch (err) {
       alert(err.status === 401 ? 'Войдите как администратор' : err.message);
+    } finally {
+      saving = false;
     }
   });
 

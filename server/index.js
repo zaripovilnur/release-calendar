@@ -77,7 +77,11 @@ function materialRows(where = '', params = []) {
 api.get('/state', (req, res) => {
   const directions = db.prepare('SELECT id, name, sort FROM directions ORDER BY sort, id').all();
   const statuses = db.prepare('SELECT * FROM statuses ORDER BY sort, id').all().map(statusRow);
-  const stages = db.prepare('SELECT product_id, status_id, from_date, to_date FROM stages ORDER BY from_date, id').all();
+  const stagesBy = new Map();
+  for (const s of db.prepare('SELECT product_id, status_id, from_date, to_date FROM stages ORDER BY from_date, id').all()) {
+    if (!stagesBy.has(s.product_id)) stagesBy.set(s.product_id, []);
+    stagesBy.get(s.product_id).push({ statusId: s.status_id, from: s.from_date, to: s.to_date });
+  }
   const counts = db.prepare("SELECT product_id, SUM(kind = 'link') AS links, SUM(kind = 'file') AS files FROM materials GROUP BY product_id").all();
   const countBy = Object.fromEntries(counts.map((c) => [c.product_id, c]));
   const products = db.prepare('SELECT id, name, direction_id, description, released_at FROM products ORDER BY id').all().map((p) => ({
@@ -86,7 +90,7 @@ api.get('/state', (req, res) => {
     directionId: p.direction_id,
     description: p.description,
     releasedAt: p.released_at,
-    stages: stages.filter((s) => s.product_id === p.id).map((s) => ({ statusId: s.status_id, from: s.from_date, to: s.to_date })),
+    stages: stagesBy.get(p.id) || [],
     links: countBy[p.id] ? countBy[p.id].links : 0,
     files: countBy[p.id] ? countBy[p.id].files : 0,
   }));
@@ -182,17 +186,13 @@ api.delete('/statuses/:id', requireAdmin, (req, res) => {
 
 // ---------- Продукты (администратор) ----------
 
-function stageText(st) {
-  return rangeText(st.from, st.to);
-}
-
 // Текст записи истории: что поменялось в сроках. Пустая строка — сроки не менялись
 function stagesDiff(oldStages, newStages) {
   const statuses = db.prepare('SELECT * FROM statuses ORDER BY is_release DESC, sort, id').all();
   const parts = [];
   for (const s of statuses) {
-    const a = oldStages.filter((x) => x.statusId === s.id).map(stageText).join(', ');
-    const b = newStages.filter((x) => x.statusId === s.id).map(stageText).join(', ');
+    const a = oldStages.filter((x) => x.statusId === s.id).map((x) => rangeText(x.from, x.to)).join(', ');
+    const b = newStages.filter((x) => x.statusId === s.id).map((x) => rangeText(x.from, x.to)).join(', ');
     if (a !== b) parts.push(`${s.name}: ${a || 'нет'} → ${b || 'нет'}`);
   }
   return parts.join('; ');
@@ -210,6 +210,7 @@ function parseProduct(body) {
     if (!statusId || !db.prepare('SELECT 1 FROM statuses WHERE id = ?').get(statusId)) return { error: 'Неизвестный статус' };
     if (!isDate(s.from) || !isDate(s.to)) return { error: 'Неверная дата' };
     if (s.from > s.to) return { error: 'Дата начала этапа позже даты окончания' };
+    if (stages.some((x) => x.statusId === statusId)) return { error: 'У продукта может быть только один этап каждого статуса' };
     stages.push({ statusId, from: s.from, to: s.to });
   }
   const team = (Array.isArray(b.team) ? b.team : [])
@@ -265,6 +266,10 @@ api.put('/products/:id', requireAdmin, (req, res) => {
     const diff = stagesDiff(productStages(id), p.stages);
     db.prepare('UPDATE products SET name = ?, direction_id = ?, description = ?, updated_at = ? WHERE id = ?')
       .run(p.name, p.directionId, p.description, now, id);
+    const release = db.prepare('SELECT id FROM statuses WHERE is_release = 1').get();
+    if (!release || !p.stages.some((s) => s.statusId === release.id)) {
+      db.prepare('UPDATE products SET released_at = NULL WHERE id = ?').run(id);
+    }
     writeChildren(id, p);
     if (diff) {
       db.prepare('INSERT INTO date_history (product_id, text, reason, author, created_at) VALUES (?, ?, ?, ?, ?)')
@@ -277,8 +282,10 @@ api.put('/products/:id', requireAdmin, (req, res) => {
 // «Релиз состоялся»: поставить или снять отметку
 api.post('/products/:id/release', requireAdmin, (req, res) => {
   const id = toId(req.params.id);
-  if (!id || !db.prepare('SELECT 1 FROM products WHERE id = ?').get(id)) return bad(res, 'Продукт не найден', 404);
+  const product = id && db.prepare('SELECT released_at FROM products WHERE id = ?').get(id);
+  if (!product) return bad(res, 'Продукт не найден', 404);
   const released = !!(req.body && req.body.released);
+  if (released === !!product.released_at) return res.json({ ok: true });
   const now = nowLocal();
   db.transaction(() => {
     db.prepare('UPDATE products SET released_at = ? WHERE id = ?').run(released ? now : null, id);

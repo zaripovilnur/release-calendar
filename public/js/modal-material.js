@@ -18,6 +18,9 @@ export function openMaterialModal(state, { productId = null, tab = 'link', files
     pinned: true,
     queue: [],
     uploading: false,
+    busy: false, // идёт сохранение ссылки — повторное нажатие «Добавить» не создаёт дубль
+    closed: false,
+    uploaded: 0, // сколько файлов уже загружено — страницу обновим, даже если окно закрыли посреди очереди
   };
   const existingFiles = {}; // productId → { имя файла: последняя версия }
   let titleRequest = 0;
@@ -139,10 +142,15 @@ export function openMaterialModal(state, { productId = null, tab = 'link', files
   }
 
   function close() {
-    for (const f of m.queue) if (f.xhr) f.xhr.abort();
+    if (m.closed) return;
+    m.closed = true;
+    const queue = m.queue;
+    m.queue = [];
+    for (const f of queue) if (f.xhr) f.xhr.abort();
     overlay.remove();
     fileInput.remove();
     document.removeEventListener('keydown', onKey);
+    if (m.uploaded && onSaved) onSaved();
   }
   function onKey(e) {
     if (e.key === 'Escape') close();
@@ -254,26 +262,31 @@ export function openMaterialModal(state, { productId = null, tab = 'link', files
         input.setCustomValidity('');
         return;
       }
+      if (m.busy) return;
+      m.busy = true;
       try {
         await api('/api/materials/link', { method: 'POST', body: { url: m.url.trim(), title: m.title, productId: m.productId, category: m.linkCategory, pinned: m.pinned } });
+        m.uploaded += 1;
         close();
-        if (onSaved) onSaved();
-      } catch (err) { alert(err.message); }
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        m.busy = false;
+      }
       return;
     }
-    if (!m.queue.length) return;
+    if (!m.queue.length || m.uploading) return;
     m.uploading = true;
     render();
     try {
-      while (m.queue.length) {
+      while (m.queue.length && !m.closed) {
         const item = m.queue[0];
-        await uploadOne(item);
+        if ((await uploadOne(item)) !== 'aborted') m.uploaded += 1;
         const i = m.queue.indexOf(item);
         if (i >= 0) m.queue.splice(i, 1);
-        render();
+        if (!m.closed) render();
       }
       close();
-      if (onSaved) onSaved();
     } catch (err) {
       m.uploading = false;
       render();

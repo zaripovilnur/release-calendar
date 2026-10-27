@@ -54,4 +54,4 @@ function rangeText(from, to) {
   return s === e ? s : `${s} – ${e}`;
 }
 
-module.exports = { nowLocal, normalizeDateTime, lastDay, monthStart, monthEnd, isDate, rangeText };
+module.exports = { nowLocal, normalizeDateTime, monthStart, monthEnd, isDate, rangeText };

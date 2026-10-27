@@ -18,7 +18,7 @@ function countdown(ga) {
   const diff = (y - now.y) * 12 + (m - now.m);
   if (diff > 0) return 'через ' + plural(diff, 'месяц', 'месяца', 'месяцев');
   if (diff === 0) return 'в этом месяце';
-  return 'вышел';
+  return 'срок прошёл';
 }
 
 function initials(name) {
@@ -34,7 +34,7 @@ function contact(url) {
   if (/^(https?|mattermost):\/\/[^\s]*(\/messages\/@|mattermost)/i.test(u)) return { ...mm, href: u };
   if (/t\.me\/|telegram/i.test(u)) return { channel: 'Telegram', aria: 'Написать в Telegram', href: /^https?:\/\//i.test(u) ? u : 'https://' + u };
   if (/^mailto:/i.test(u) || u.includes('@')) return { channel: 'Почта', aria: 'Написать на почту', href: /^mailto:/i.test(u) ? u : 'mailto:' + u };
-  return { channel: 'Написать', aria: 'Написать', href: u };
+  return { channel: 'Написать', aria: 'Написать', href: /^https?:\/\//i.test(u) ? u : null };
 }
 
 // Год, на который показываются сроки карточки: год выхода в GA, иначе выбранный
@@ -118,7 +118,7 @@ function renderDesktop() {
                 <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F2F2FE;">
                   <span style="flex: none; width: 36px; height: 36px; border-radius: 18px; background: #E0E0F5; color: #000000; font-size: 12px; display: flex; align-items: center; justify-content: center;">${esc(initials(m.fullName))}</span>
                   <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; margin-right: auto;"><span style="font-size: 15px; line-height: 1.3;">${esc(m.fullName)}</span><span style="font-size: 13px; color: #5C5C73;">${esc(m.role)}</span></div>${m.contactUrl ? `
-                  <a ${c.href ? `href="${esc(c.href)}"` : 'title="Адрес Mattermost не задан в настройках сервиса"'}${/^https?:/i.test(c.href || '') ? ' target="_blank" rel="noopener"' : ''} aria-label="${c.aria}" style="flex: none; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 6px; background: #F2F2FE; color: #0000FF; font-size: 13px; text-decoration: none;"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4 3 11l7 2.5L12.5 21 21 4Z"></path><path d="m10 13.5 4-4"></path></svg>${c.channel}</a>` : ''}
+                  <a ${c.href ? `href="${esc(c.href)}"` : 'title="Ссылка для связи не задана или неверна"'}${/^https?:/i.test(c.href || '') ? ' target="_blank" rel="noopener"' : ''} aria-label="${c.aria}" style="flex: none; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 6px; background: #F2F2FE; color: #0000FF; font-size: 13px; text-decoration: none;"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4 3 11l7 2.5L12.5 21 21 4Z"></path><path d="m10 13.5 4-4"></path></svg>${c.channel}</a>` : ''}
                 </div>`;
   }).join('');
 

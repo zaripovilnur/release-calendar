@@ -3,8 +3,8 @@
 export const MSHORT = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
 export const MNOM = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
 export const MGEN = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-export const MLOWER = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-export const MDATE = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+const MLOWER = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+const MDATE = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
 
 export const KEY_PRE = 'pre-ga';
 export const KEY_SUPPORT = 'sales-support';
@@ -32,13 +32,13 @@ export function ym(s) {
   const [y, m, d = 1] = s.split('-').map(Number);
   return { y, m, d };
 }
-export function ymStr(y, m) {
+function ymStr(y, m) {
   return `${y}-${String(m).padStart(2, '0')}`;
 }
 export function dateStr(y, m, d) {
   return `${ymStr(y, m)}-${String(d).padStart(2, '0')}`;
 }
-export function lastDay(y, m) {
+function lastDay(y, m) {
   return new Date(y, m, 0).getDate();
 }
 // Следующий день после даты 'YYYY-MM-DD'
@@ -123,14 +123,14 @@ export function inYear(product, year) {
 }
 
 // Год по умолчанию: текущий, если в нём есть этапы; иначе ближайший следующий с этапами
-export function stageYears(state) {
+function stageYears(state) {
   const years = new Set();
   for (const p of state.products) for (const st of p.stages) {
     for (let y = ym(st.from).y; y <= ym(st.to).y; y++) years.add(y);
   }
   return [...years].sort((a, b) => a - b);
 }
-export function defaultYear(state) {
+function defaultYear(state) {
   const now = today().y;
   const years = stageYears(state);
   if (!years.length || years.includes(now)) return now;
@@ -146,7 +146,7 @@ export function setYear(y) {
 }
 
 // Этап занимает целые месяцы: с 1-го числа по последнее
-export function wholeMonths(st) {
+function wholeMonths(st) {
   const a = ym(st.from), b = ym(st.to);
   return a.d === 1 && b.d === lastDay(b.y, b.m);
 }
@@ -450,9 +450,12 @@ export function renderKeepingFocus(root, html) {
   const active = document.activeElement;
   const role = active && root.contains(active) && active.dataset ? active.dataset.role : null;
   const pos = role && typeof active.selectionStart === 'number' ? active.selectionStart : null;
+  let selector = role ? `[data-role="${role}"]` : '';
+  if (role && active.dataset.id) selector += `[data-id="${active.dataset.id}"]`;
+  if (role && active.dataset.cat) selector += `[data-cat="${CSS.escape(active.dataset.cat)}"]`;
   root.innerHTML = html;
   if (role) {
-    const el = root.querySelector(`[data-role="${role}"]`);
+    const el = root.querySelector(selector);
     if (el) {
       el.focus();
       if (pos != null && el.setSelectionRange) try { el.setSelectionRange(pos, pos); } catch { /* не текстовое поле */ }

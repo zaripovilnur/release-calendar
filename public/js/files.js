@@ -72,7 +72,7 @@ function render() {
   const label = (opts, v) => (opts.find((o) => String(o.value) === String(v)) || opts[0]).label;
   const orders = [{ value: 'new', label: 'Сначала новые' }, { value: 'old', label: 'Сначала старые' }];
 
-  const nav = navClosed() ? collapsedNav('files') : openNav('files', sidebar(), false);
+  const nav = navClosed() ? collapsedNav('files') : openNav('files', sidebar());
   const html = `<div class="has-bottom-nav" style="font-family: 'TT Norms Pro', Manrope, system-ui, sans-serif; color: #000000; background: #F2F2FE; display: flex; flex-wrap: wrap; min-height: 1100px; box-sizing: border-box;">
   ${nav}
 

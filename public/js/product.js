@@ -48,6 +48,12 @@ function strip(year, height) {
   }).join('');
 }
 
+// Корзина администратора у ссылки или файла
+function deleteButton(m, sizeCss) {
+  const label = m.kind === 'file' ? 'Удалить файл' : 'Удалить ссылку';
+  return `<button type="button" data-action="delete-material" data-id="${m.id}" aria-label="${label}" style="${sizeCss} padding: 0; border: 0; border-radius: 6px; background: transparent; color: #44445C; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.trash}</button>`;
+}
+
 const pinnedLinks = () => details.materials.filter((m) => m.kind === 'link' && m.pinned);
 const files = () => details.materials.filter((m) => m.kind === 'file');
 
@@ -66,19 +72,25 @@ function renderDesktop() {
     sup ? `<div style="background: #F2F2FE; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; color: #44445C;">Поддержка продаж</span><span style="font-size: 20px;">с ${esc(monthName(sup.from, year, MGEN))}</span></div>` : '',
   ].filter(Boolean).join('\n          ');
 
-  const pins = pinnedLinks().map((m) => `
+  const pins = pinnedLinks().map((m) => {
+    const tile = `
                 <a href="${esc(m.url)}" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 10px; background: #F2F2FE; border-radius: 8px; padding: 16px; color: #000000; text-decoration: none;">
                   <div style="display: flex; align-items: center; justify-content: space-between;"><span style="font-size: 12px; font-weight: 500; color: #0000FF;">${esc(m.category)}</span>${ICON.arrowUpRight14}</div>
                   <span style="font-size: 15px;">${esc(m.title)}</span>
                   <span style="font-size: 12px; color: #5C5C73;">${esc(m.note || 'обновлено ' + shortDate(m.date))}</span>
-                </a>`).join('');
+                </a>`;
+    // Кнопка не может стоять внутри ссылки — у администратора плитка в обёртке, корзина в правом нижнем углу
+    return state.isAdmin
+      ? `<div style="position: relative; display: flex; flex-direction: column;">${tile.replace('style="display: flex;', 'style="flex: 1; display: flex;')}${deleteButton(m, 'position: absolute; right: 8px; bottom: 8px; width: 32px; height: 32px;')}</div>`
+      : tile;
+  }).join('');
 
   const fileRows = files().map((m) => `
-                <div style="display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 40px; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid #F2F2FE;">
+                <div style="display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 40px${state.isAdmin ? ' 40px' : ''}; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid #F2F2FE;">
                   <span style="width: 44px; height: 44px; border-radius: 6px; background: #F2F2FE; color: #0000FF; font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center;">${esc(fileExt(m.title))}</span>
                   <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;"><span style="font-size: 15px;">${esc(m.title)}</span><span style="font-size: 12px; color: #5C5C73;">${esc((m.note ? m.note + ' · ' : '') + 'версия ' + m.version)}</span></div>
                   <span style="font-size: 13px; color: #5C5C73; white-space: nowrap;">${shortDate(m.date)} · ${esc(m.author)}</span>
-                  <button type="button" data-action="download" data-id="${m.id}" aria-label="Скачать файл" style="width: 40px; height: 40px; border: 1px solid #E0E0F5; border-radius: 6px; background: #FFFFFF; color: #000000; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.download18}</button>
+                  <button type="button" data-action="download" data-id="${m.id}" aria-label="Скачать файл" style="width: 40px; height: 40px; border: 1px solid #E0E0F5; border-radius: 6px; background: #FFFFFF; color: #000000; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.download18}</button>${state.isAdmin ? deleteButton(m, 'width: 40px; height: 40px;') : ''}
                 </div>`).join('');
 
   const team = details.team.map((m) => {
@@ -197,17 +209,28 @@ function renderMobile() {
     ga ? plaque('GA', monthName(ga.from, year), true) : '',
     sup ? plaque('Поддержка', 'с ' + monthName(sup.from, year, MGEN), false) : '',
   ].filter(Boolean).join('\n      ');
-  const links = pinnedLinks().map((m) => `
-      <a href="${esc(m.url)}" target="_blank" rel="noopener" style="background: #FFFFFF; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; color: #000000; text-decoration: none; min-height: 56px; box-sizing: border-box;">
+  const links = pinnedLinks().map((m) => {
+    const inner = `
         <span style="flex: none; width: 40px; height: 40px; border-radius: 6px; background: #F2F2FE; color: #0000FF; font-size: 10px; font-weight: 500; display: flex; align-items: center; justify-content: center;">${esc(categoryShort(m.category))}</span>
         <span style="font-size: 15px; margin-right: auto;">${esc(m.title)}</span>
-        ${ICON.arrowUpRight16}
-      </a>`).join('');
+        ${ICON.arrowUpRight16}`;
+    if (!state.isAdmin) {
+      return `
+      <a href="${esc(m.url)}" target="_blank" rel="noopener" style="background: #FFFFFF; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; color: #000000; text-decoration: none; min-height: 56px; box-sizing: border-box;">${inner}
+      </a>`;
+    }
+    return `
+      <div style="background: #FFFFFF; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; min-height: 56px; box-sizing: border-box;">
+        <a href="${esc(m.url)}" target="_blank" rel="noopener" style="flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; color: #000000; text-decoration: none;">${inner}
+        </a>
+        ${deleteButton(m, 'flex: none; width: 40px; height: 40px;')}
+      </div>`;
+  }).join('');
   const fileRows = files().map((m) => `
       <div style="background: #FFFFFF; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; min-height: 56px; box-sizing: border-box;">
         <span style="flex: none; width: 40px; height: 40px; border-radius: 6px; background: #F2F2FE; color: #0000FF; font-size: 10px; font-weight: 500; display: flex; align-items: center; justify-content: center;">${esc(fileExt(m.title))}</span>
         <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; margin-right: auto;"><span style="font-size: 15px;">${esc(stripExt(m.title))}</span><span style="font-size: 12px; color: #5C5C73;">версия ${m.version} · ${shortDate(m.date)}</span></div>
-        <button type="button" data-action="download" data-id="${m.id}" aria-label="Скачать файл" style="flex: none; width: 40px; height: 40px; border: 1px solid #E0E0F5; border-radius: 6px; background: #FFFFFF; color: #000000; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.download16}</button>
+        <button type="button" data-action="download" data-id="${m.id}" aria-label="Скачать файл" style="flex: none; width: 40px; height: 40px; border: 1px solid #E0E0F5; border-radius: 6px; background: #FFFFFF; color: #000000; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.download16}</button>${state.isAdmin ? deleteButton(m, 'flex: none; width: 40px; height: 40px;') : ''}
       </div>`).join('');
 
   root.innerHTML = `<div style="width: 100%; min-height: 100vh; min-height: 100dvh; box-sizing: border-box; font-family: 'TT Norms Pro', Manrope, system-ui, sans-serif; color: #000000; background: #F2F2FE; display: flex; flex-direction: column;">
@@ -259,6 +282,19 @@ root.addEventListener('click', async (e) => {
     case 'add-link': openMaterial('link'); break;
     case 'add-file': openMaterial('file'); break;
     case 'download': window.location.href = `/api/files/${t.dataset.id}`; break;
+    case 'delete-material': {
+      const m = details.materials.find((x) => x.id === Number(t.dataset.id));
+      if (!m) break;
+      const question = m.kind === 'file' ? `Удалить файл «${m.title}» со всеми версиями?` : `Удалить ссылку «${m.title}»?`;
+      if (!confirm(question)) break;
+      try {
+        await api(`/api/materials/${m.id}`, { method: 'DELETE' });
+      } catch (err) {
+        alert(err.status === 401 ? 'Войдите как администратор' : err.message);
+      }
+      await reload();
+      break;
+    }
     case 'copy-link':
       try {
         await navigator.clipboard.writeText(location.href);

@@ -351,6 +351,16 @@ api.post('/materials/file', (req, res) => {
   });
 });
 
+// Удалить ссылку или файл со всеми версиями (только администратор)
+api.delete('/materials/:id', requireAdmin, (req, res) => {
+  const id = toId(req.params.id);
+  if (!id || !db.prepare('SELECT 1 FROM materials WHERE id = ?').get(id)) return bad(res, 'Материал не найден', 404);
+  const files = db.prepare('SELECT stored_name FROM file_versions WHERE material_id = ?').all(id);
+  db.prepare('DELETE FROM materials WHERE id = ?').run(id);
+  for (const f of files) fs.rmSync(path.join(config.UPLOAD_DIR, f.stored_name), { force: true });
+  res.json({ ok: true });
+});
+
 api.get('/files/:id', (req, res) => {
   const v = db.prepare('SELECT * FROM file_versions WHERE material_id = ? ORDER BY version DESC LIMIT 1').get(toId(req.params.id));
   if (!v) return bad(res, 'Файл не найден', 404);

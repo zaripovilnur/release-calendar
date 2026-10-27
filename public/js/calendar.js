@@ -120,19 +120,15 @@ function sidebarSections(products) {
         </div>`;
   }).join('');
 
-  const statuses = state.statuses.map((s) => {
-    const sw = admin
-      ? `<button type="button" data-action="status-color" data-id="${s.id}" aria-label="Изменить цвет статуса" style="flex: none; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 4px; outline: 2px solid #8A8AC2; outline-offset: 2px; cursor: pointer; ${swatchCss(s)}"></button><input type="color" class="color-input" data-role="status-color" data-id="${s.id}" tabindex="-1" aria-hidden="true" value="${(s.border || s.background).toLowerCase()}">`
-      : `<span style="flex: none; width: 16px; height: 16px; border-radius: 3px; ${swatchCss(s)}"></span>`;
-    const tail = admin ? `
-          ${smallBtn('rename-status', s.id, 'Переименовать статус', ICON.pencil)}
-          ${smallBtn('delete-status', s.id, 'Удалить статус', ICON.trash)}` : '';
-    return `
+  // Статусы в панели — только у администратора: там их переименовывают, перекрашивают и удаляют.
+  // Сотруднику они не нужны — легенда этапов есть над календарём
+  const statuses = state.statuses.map((s) => `
         <div style="display: flex; align-items: center; gap: 2px; min-height: 32px;">
-          ${sw}
-          <span style="flex: 1; min-width: 0; font-size: 14px; line-height: 1.3; padding-left: 10px;">${esc(s.name)}</span>${tail}
-        </div>`;
-  }).join('');
+          <button type="button" data-action="status-color" data-id="${s.id}" aria-label="Изменить цвет статуса" style="flex: none; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 4px; outline: 2px solid #8A8AC2; outline-offset: 2px; cursor: pointer; ${swatchCss(s)}"></button><input type="color" class="color-input" data-role="status-color" data-id="${s.id}" tabindex="-1" aria-hidden="true" value="${(s.border || s.background).toLowerCase()}">
+          <span style="flex: 1; min-width: 0; font-size: 14px; line-height: 1.3; padding-left: 10px;">${esc(s.name)}</span>
+          ${smallBtn('rename-status', s.id, 'Переименовать статус', ICON.pencil)}
+          ${smallBtn('delete-status', s.id, 'Удалить статус', ICON.trash)}
+        </div>`).join('');
 
   const gaCount = Array(12).fill(0);
   for (const p of products) { const m = gaMonth(p); if (m) gaCount[m - 1]++; }
@@ -149,13 +145,13 @@ function sidebarSections(products) {
         <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Направления</span>
       </div>${dirs}${admin ? addRow('add-direction', 'Новое направление', 'Добавить направление') : ''}
     </div>
-
+${admin ? `
     <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 8px;">
       <div style="display: flex; align-items: center; min-height: 32px;">
         <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Статусы</span>
-      </div>${statuses}${admin ? addRow('add-status', 'Новый статус', 'Добавить статус') : ''}
+      </div>${statuses}${addRow('add-status', 'Новый статус', 'Добавить статус')}
     </div>
-
+` : ''}
     <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 8px;">
       <div style="display: flex; align-items: center; gap: 4px;">
         <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Выходы в GA · ${year}</span>

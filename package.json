@@ -1,0 +1,25 @@
+{
+  "name": "release-calendar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Календарь релизов YADRO: календарь выхода продуктов, карточки продуктов со ссылками, файлами и командой.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "seed": "node server/seed.js",
+    "seed:demo": "node server/seed.js --demo",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.11.1",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "multer": "^2.5.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}

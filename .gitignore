@@ -3,3 +3,4 @@ storage/
 .env
 test-results/
 playwright-report/
+tests/__screenshots__/

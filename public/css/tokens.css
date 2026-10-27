@@ -1,0 +1,26 @@
+/* Дизайн-токены YADRO (раздел 3 ТЗ) */
+:root {
+  --blue: #0000FF;
+  --blue-hover: #0000B3;
+  --black: #000000;
+  --white: #FFFFFF;
+  --steel-light: #F2F2FE;
+  --steel: #E0E0F5;
+  --text-2: #44445C;
+  --text-3: #5C5C73;
+  --control-border: #8A8AC2;
+  --swatch-outline: #C9C9EA;
+  --dropzone: #9999E0;
+  --overlay: rgba(0,0,0,0.4);
+  --modal-shadow: 0 24px 60px rgba(0,0,40,0.25);
+  --font: 'TT Norms Pro', Manrope, system-ui, sans-serif;
+}
+
+/*
+  Фирменный TT Norms Pro: когда заказчик передаст файлы, положить их в public/fonts/
+  и раскомментировать. До этого работает Manrope из Google Fonts.
+
+@font-face { font-family: 'TT Norms Pro'; font-weight: 300; src: url('/fonts/TTNormsPro-Light.woff2') format('woff2'); }
+@font-face { font-family: 'TT Norms Pro'; font-weight: 400; src: url('/fonts/TTNormsPro-Regular.woff2') format('woff2'); }
+@font-face { font-family: 'TT Norms Pro'; font-weight: 500; src: url('/fonts/TTNormsPro-Medium.woff2') format('woff2'); }
+*/

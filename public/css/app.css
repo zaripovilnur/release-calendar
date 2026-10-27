@@ -1,0 +1,28 @@
+/* Базовые стили — как в эталонах */
+body { margin: 0; background: var(--steel-light); }
+a { color: var(--blue); }
+a:hover { color: var(--blue-hover); }
+
+/* Нижнее меню и мобильные экраны — только на телефоне */
+.bottom-nav { display: none !important; }
+
+/* Поле в фокусе — рамка Electric Blue, как «Адрес ссылки» в эталоне 06 */
+.dialog input:focus, .dialog select:focus, .dialog textarea:focus { border-color: var(--blue) !important; outline: 0; }
+
+/* Нативный <select>, оформленный как чип: сам список прозрачный поверх подписи */
+.chip-select { position: relative; }
+.chip-select select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font: inherit; }
+
+/* Скрытый выбор цвета статуса */
+.color-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+@media (max-width: 768px) {
+  .main-nav { display: none !important; }
+  .bottom-nav { display: grid !important; }
+  .bottom-nav.fixed { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; }
+  .bottom-nav.sticky { position: sticky; bottom: 0; z-index: 5; }
+  .has-bottom-nav { padding-bottom: 84px; }
+
+  .modal-overlay { padding: 16px !important; align-items: center !important; }
+  .modal-overlay .dialog { width: 100% !important; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto; }
+}

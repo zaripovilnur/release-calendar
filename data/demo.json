@@ -1,0 +1,24 @@
+{
+  "_comment": "Демо-данные ТОЛЬКО для визуальной сверки с эталонами (npm run seed:demo). В рабочей базе не используются. Файлы создаются пустыми заглушками с указанными именами.",
+  "product": "TATLIN.UNIFIED G3",
+  "description": "[Короткое описание продукта: что это и для кого — одно-два предложения, чтобы любой в команде сразу понимал контекст]",
+  "team": [
+    { "fullName": "[Имя Фамилия]", "role": "Продакт-менеджер", "contactUrl": "https://t.me/example" },
+    { "fullName": "[Имя Фамилия]", "role": "Маркетинг", "contactUrl": "mailto:name@yadro.com" }
+  ],
+  "dateHistory": [
+    { "text": "GA: [было] → [стало]", "reason": "[Причина переноса]", "author": "[автор]", "createdAt": "2026-10-27T12:00:00" }
+  ],
+  "materials": [
+    { "kind": "file", "title": "Презентация продукта.pptx", "note": "Финальная для партнёров", "category": "Презентации", "version": 3, "createdAt": "2026-10-24", "author": "[автор]" },
+    { "kind": "link", "title": "Макеты и креативы", "url": "https://www.figma.com/", "category": "Макеты", "pinned": true, "createdAt": "2026-10-23", "author": "[автор]" },
+    { "kind": "file", "title": "Логотипы и шаблоны баннеров.zip", "note": "Для соцсетей и медийной рекламы", "category": "Визуалы", "version": 1, "createdAt": "2026-10-22", "author": "[автор]" },
+    { "kind": "link", "title": "Медиаплан запуска", "url": "https://docs.google.com/spreadsheets/", "category": "Планы", "pinned": true, "createdAt": "2026-10-21", "author": "[автор]" },
+    { "kind": "link", "title": "Описание и ключевые преимущества", "url": "https://wiki.example/", "category": "Документы", "pinned": true, "createdAt": "2026-10-20", "author": "[автор]" },
+    { "kind": "file", "title": "Технические характеристики.pdf", "note": "От продуктовой команды", "category": "Документы", "version": 1, "createdAt": "2026-10-18", "author": "[автор]" },
+    { "kind": "link", "title": "Пресс-релиз, черновик", "url": "https://docs.google.com/document/", "category": "Тексты", "pinned": true, "note": "на согласовании", "createdAt": "2026-10-15", "author": "[автор]" },
+    { "kind": "link", "title": "Страница продукта на сайте", "url": "https://yadro.com/", "category": "Сайт", "pinned": true, "note": "в разработке", "createdAt": "2026-10-14", "author": "[автор]" },
+    { "kind": "file", "title": "Бриф на запуск.docx", "note": "Цели, аудитория, каналы", "category": "Документы", "version": 2, "createdAt": "2026-10-10", "author": "[автор]" },
+    { "kind": "link", "title": "Фото и видео продукта", "url": "https://disk.yandex.ru/", "category": "Визуалы", "pinned": true, "note": "папка", "createdAt": "2026-10-08", "author": "[автор]" }
+  ]
+}

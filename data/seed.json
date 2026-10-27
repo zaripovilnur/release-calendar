@@ -1,0 +1,263 @@
+{
+  "year": 2027,
+  "directions": [
+    {
+      "name": "Серверы",
+      "sort": 1
+    },
+    {
+      "name": "Системы хранения данных",
+      "sort": 2
+    },
+    {
+      "name": "Коммутаторы",
+      "sort": 3
+    },
+    {
+      "name": "Системы охлаждения BOREY",
+      "sort": 4
+    }
+  ],
+  "statuses": [
+    {
+      "key": "pre-ga",
+      "name": "Pre-GA",
+      "sort": 1,
+      "isRelease": false,
+      "style": {
+        "background": "#FFFFFF",
+        "color": "#0000FF",
+        "border": "#0000FF"
+      }
+    },
+    {
+      "key": "ga",
+      "name": "GA",
+      "sort": 2,
+      "isRelease": true,
+      "style": {
+        "background": "#0000FF",
+        "color": "#FFFFFF",
+        "border": null
+      }
+    },
+    {
+      "key": "sales-support",
+      "name": "Поддержка продаж",
+      "sort": 3,
+      "isRelease": false,
+      "style": {
+        "background": "#E0E0F5",
+        "color": "#000000",
+        "border": null
+      }
+    }
+  ],
+  "products": [
+    {
+      "name": "VEGMAN R215 G4",
+      "direction": "Серверы",
+      "stages": [
+        {
+          "status": "ga",
+          "from": "2027-02",
+          "to": "2027-02"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-03",
+          "to": "2027-12"
+        }
+      ]
+    },
+    {
+      "name": "VEGMAN R220S G4",
+      "direction": "Серверы",
+      "stages": [
+        {
+          "status": "pre-ga",
+          "from": "2027-01",
+          "to": "2027-03"
+        },
+        {
+          "status": "ga",
+          "from": "2027-04",
+          "to": "2027-04"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-05",
+          "to": "2027-12"
+        }
+      ]
+    },
+    {
+      "name": "VEGMAN R120S G4",
+      "direction": "Серверы",
+      "stages": [
+        {
+          "status": "pre-ga",
+          "from": "2027-05",
+          "to": "2027-07"
+        },
+        {
+          "status": "ga",
+          "from": "2027-08",
+          "to": "2027-08"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-09",
+          "to": "2027-12"
+        }
+      ]
+    },
+    {
+      "name": "TATLIN.UNIFIED G3",
+      "direction": "Системы хранения данных",
+      "stages": [
+        {
+          "status": "pre-ga",
+          "from": "2027-01",
+          "to": "2027-03"
+        },
+        {
+          "status": "ga",
+          "from": "2027-04",
+          "to": "2027-04"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-05",
+          "to": "2027-12"
+        }
+      ]
+    },
+    {
+      "name": "TATLIN.ENTRY",
+      "direction": "Системы хранения данных",
+      "stages": [
+        {
+          "status": "pre-ga",
+          "from": "2027-02",
+          "to": "2027-04"
+        },
+        {
+          "status": "ga",
+          "from": "2027-05",
+          "to": "2027-05"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-06",
+          "to": "2027-12"
+        }
+      ]
+    },
+    {
+      "name": "TATLIN.DATACUBE",
+      "direction": "Системы хранения данных",
+      "stages": [
+        {
+          "status": "pre-ga",
+          "from": "2027-06",
+          "to": "2027-08"
+        },
+        {
+          "status": "ga",
+          "from": "2027-09",
+          "to": "2027-09"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-10",
+          "to": "2027-12"
+        }
+      ]
+    },
+    {
+      "name": "TATLIN.OBJECT v2.0",
+      "direction": "Системы хранения данных",
+      "stages": [
+        {
+          "status": "pre-ga",
+          "from": "2027-06",
+          "to": "2027-08"
+        },
+        {
+          "status": "ga",
+          "from": "2027-09",
+          "to": "2027-09"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-10",
+          "to": "2027-12"
+        }
+      ]
+    },
+    {
+      "name": "SE C4034F",
+      "direction": "Коммутаторы",
+      "stages": [
+        {
+          "status": "pre-ga",
+          "from": "2027-05",
+          "to": "2027-07"
+        },
+        {
+          "status": "ga",
+          "from": "2027-08",
+          "to": "2027-08"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-09",
+          "to": "2027-12"
+        }
+      ]
+    },
+    {
+      "name": "SE C4000",
+      "direction": "Коммутаторы",
+      "stages": [
+        {
+          "status": "pre-ga",
+          "from": "2027-05",
+          "to": "2027-07"
+        },
+        {
+          "status": "ga",
+          "from": "2027-08",
+          "to": "2027-08"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-09",
+          "to": "2027-12"
+        }
+      ]
+    },
+    {
+      "name": "Контроллер управления v2.0",
+      "direction": "Системы охлаждения BOREY",
+      "stages": [
+        {
+          "status": "pre-ga",
+          "from": "2027-02",
+          "to": "2027-04"
+        },
+        {
+          "status": "ga",
+          "from": "2027-05",
+          "to": "2027-05"
+        },
+        {
+          "status": "sales-support",
+          "from": "2027-06",
+          "to": "2027-12"
+        }
+      ]
+    }
+  ]
+}

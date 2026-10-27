@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Календарь на телефоне</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0000FF}a:hover{color:#0000B3}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; font-family: 'TT Norms Pro', Manrope, system-ui, sans-serif; color: #000000; background: #F2F2FE; display: flex; flex-direction: column; overflow: hidden;">
+  <div style="position: relative; overflow: hidden; background: #0000FF; color: #FFFFFF; padding: 56px 20px 20px; display: flex; flex-direction: column; gap: 18px;">
+    <svg aria-hidden="true" style="position: absolute; right: 0; top: 0;" width="240" height="210" viewBox="0 0 240 210">
+      <defs><pattern id="tri-mob" width="60" height="103.92" patternUnits="userSpaceOnUse" x="240"><path d="M0 0L60 103.92M60 0L0 103.92M0 0H60M0 51.96H60" fill="none" stroke="#F2F2FE" stroke-width="1"></path></pattern>
+      <linearGradient id="fade-mob" x1="0" x2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0"></stop><stop offset="0.85" stop-color="#FFFFFF" stop-opacity="1"></stop></linearGradient>
+      <mask id="mask-mob"><rect width="240" height="210" fill="url(#fade-mob)"></rect></mask></defs>
+      <rect width="240" height="210" fill="url(#tri-mob)" mask="url(#mask-mob)" opacity="0.45"></rect>
+    </svg>
+    <img src="/_blob/a85e53c2b781d5ae0739d6b6baadc0d0" alt="YADRO" style="position: relative; width: 84px; height: auto;">
+    <div style="position: relative; display: flex; flex-direction: column; gap: 6px;">
+      <h1 style="margin: 0; font-size: 30px; font-weight: 400; line-height: 1;">Выходы в GA</h1>
+      <span style="font-size: 14px;">2027 · 10 продуктов</span>
+    </div>
+    <div style="position: relative; display: flex; gap: 6px; overflow: hidden;">
+      <sc-for list="{{months}}" as="m" hint-placeholder-count="6">
+        <button type="button" onClick="{{m.pick}}" aria-pressed="{{m.pressed}}" aria-label="{{m.aria}}" style="{{m.style}}"><span style="font-size: 13px;">{{m.n}}</span><span style="display: flex; gap: 3px; height: 5px;"><sc-for list="{{m.dots}}" as="x"><span style="{{m.dotStyle}}"></span></sc-for></span></button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow: hidden;">
+    <span style="font-size: 13px; font-weight: 500; color: #44445C; padding: 4px 2px 0;">{{title}}</span>
+    <sc-for list="{{items}}" as="i" hint-placeholder-count="2">
+      <a href="MobileProduct.dc.html" style="background: #FFFFFF; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; color: #000000; text-decoration: none; min-height: 64px; box-sizing: border-box;">
+        <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; margin-right: auto;"><span style="font-size: 16px; font-weight: 300; line-height: 1.25;">{{i.name}}</span><span style="font-size: 13px; color: #5C5C73; line-height: 1.35;">{{i.meta}}</span></div>
+        <svg aria-hidden="true" style="flex: none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0000FF" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"></path></svg>
+      </a>
+    </sc-for>
+  </div>
+
+  <nav aria-label="Нижнее меню" style="height: 84px; background: #FFFFFF; border-top: 1px solid #E0E0F5; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding-bottom: 20px; box-sizing: border-box;">
+    <a href="Mobile.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 500; color: #0000FF; text-decoration: none;"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Календарь</a>
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: #44445C; text-decoration: none;"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>Продукты</a>
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: #44445C; text-decoration: none;"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.5 12.6 20.9a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"></path></svg>Материалы</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var self = this;
+    var sel = (this.state && this.state.month) || 'Фев';
+    var data = {
+      'Фев': { full: 'Февраль', items: [
+        { name: 'VEGMAN R215 G4', meta: 'Серверы · без этапа Pre-GA' } ] },
+      'Апр': { full: 'Апрель', items: [
+        { name: 'VEGMAN R220S G4', meta: 'Серверы · Pre-GA январь – март' },
+        { name: 'TATLIN.UNIFIED G3', meta: 'Системы хранения данных · Pre-GA январь – март' } ] },
+      'Май': { full: 'Май', items: [
+        { name: 'TATLIN.ENTRY', meta: 'Системы хранения данных · Pre-GA февраль – апрель' },
+        { name: 'Контроллер управления v2.0', meta: 'Системы охлаждения BOREY · Pre-GA февраль – апрель' } ] },
+      'Авг': { full: 'Август', items: [
+        { name: 'VEGMAN R120S G4', meta: 'Серверы · Pre-GA май – июль' },
+        { name: 'SE C4034F', meta: 'Коммутаторы · Pre-GA май – июль' },
+        { name: 'SE C4000', meta: 'Коммутаторы · Pre-GA май – июль' } ] },
+      'Сен': { full: 'Сентябрь', items: [
+        { name: 'TATLIN.DATACUBE', meta: 'Системы хранения данных · Pre-GA июнь – август' },
+        { name: 'TATLIN.OBJECT v2.0', meta: 'Системы хранения данных · Pre-GA июнь – август' } ] }
+    };
+    var months = ['Фев','Апр','Май','Авг','Сен'].map(function (n) {
+      var c = data[n].items.length, dots = [];
+      for (var k = 0; k < c; k++) dots.push({ k: k });
+      var on = n === sel;
+      return {
+        n: n, dots: dots, pressed: on ? 'true' : 'false', aria: data[n].full + ': ' + c + ' в GA',
+        pick: function () { self.setState({ month: n }); },
+        style: 'flex: 1; min-width: 0; height: 52px; border: 0; border-radius: 8px; font: inherit; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 0; cursor: pointer; ' + (on ? 'background: #FFFFFF; color: #0000FF; font-weight: 500;' : 'background: rgba(255,255,255,0.14); color: #FFFFFF;'),
+        dotStyle: 'width: 5px; height: 5px; border-radius: 1px; background: ' + (on ? '#0000FF' : '#FFFFFF') + ';'
+      };
+    });
+    return { months: months, title: data[sel].full + ' — выход в GA', items: data[sel].items };
+  }
+}
+</script>
+</body>
+</html>

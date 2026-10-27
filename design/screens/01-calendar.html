@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Календарь выхода продуктов</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F2FE}
+a{color:#0000FF}a:hover{color:#0000B3}
+</style>
+
+</head>
+<body>
+<div style="font-family: 'TT Norms Pro', Manrope, system-ui, sans-serif; color: #000000; background: #F2F2FE; display: flex; flex-wrap: wrap; min-height: 1400px; box-sizing: border-box; position: relative;">
+
+  
+
+  
+  <nav aria-label="Основное меню" style="flex: 1 1 256px; max-width: 280px; min-width: 232px; background: #FFFFFF; border-right: 1px solid #E0E0F5; padding: 22px 16px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px;">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px;">
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-right: auto;">
+        <img src="../assets/yadro-logo-blue.png" alt="YADRO" style="width: 96px; height: auto; display: block;">
+        <span style="font-size: 13px; color: #5C5C73;">Календарь релизов</span>
+      </div>
+      <button type="button" aria-label="Свернуть панель" style="width: 40px; height: 40px; border: 0; border-radius: 8px; background: #F2F2FE; color: #44445C; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16M15 10l-2 2 2 2"></path></svg></button>
+    </div>
+
+    
+
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <a href="01-calendar.html" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; background: #F2F2FE; color: #0000FF; font-weight: 500; font-size: 15px; text-decoration: none;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Календарь</a>
+      <a href="02-products.html" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; color: #000000; font-size: 15px; text-decoration: none;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>Все продукты</a>
+      <a href="03-files.html" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; color: #000000; font-size: 15px; text-decoration: none;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.5 12.6 20.9a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"></path></svg>Файлы и ссылки</a>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 8px;">
+      <div style="display: flex; align-items: center; min-height: 32px;">
+        <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Направления</span>
+        
+          <button type="button" aria-label="Редактировать направления (вход для администратора)" style="width: 32px; height: 32px; border: 0; border-radius: 6px; background: transparent; color: #5C5C73; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4Z"></path><path d="m13.5 6.5 4 4"></path></svg></button>
+        
+      </div>
+      
+        <div style="display: flex; align-items: center; gap: 2px; min-height: 32px;">
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; flex: 1; min-width: 0; cursor: pointer;"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #0000FF; flex: none; margin: 0;"><span style="flex: 1; min-width: 0; line-height: 1.3;">Серверы</span></label>
+          <span style="font-size: 13px; color: #5C5C73; padding-left: 6px;">3</span>
+          
+        </div>
+      
+        <div style="display: flex; align-items: center; gap: 2px; min-height: 32px;">
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; flex: 1; min-width: 0; cursor: pointer;"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #0000FF; flex: none; margin: 0;"><span style="flex: 1; min-width: 0; line-height: 1.3;">Системы хранения данных</span></label>
+          <span style="font-size: 13px; color: #5C5C73; padding-left: 6px;">4</span>
+          
+        </div>
+      
+        <div style="display: flex; align-items: center; gap: 2px; min-height: 32px;">
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; flex: 1; min-width: 0; cursor: pointer;"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #0000FF; flex: none; margin: 0;"><span style="flex: 1; min-width: 0; line-height: 1.3;">Коммутаторы</span></label>
+          <span style="font-size: 13px; color: #5C5C73; padding-left: 6px;">2</span>
+          
+        </div>
+      
+        <div style="display: flex; align-items: center; gap: 2px; min-height: 32px;">
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; flex: 1; min-width: 0; cursor: pointer;"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #0000FF; flex: none; margin: 0;"><span style="flex: 1; min-width: 0; line-height: 1.3;">Системы охлаждения BOREY</span></label>
+          <span style="font-size: 13px; color: #5C5C73; padding-left: 6px;">1</span>
+          
+        </div>
+      
+      
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 8px;">
+      <div style="display: flex; align-items: center; min-height: 32px;">
+        <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Статусы</span>
+        
+          <button type="button" aria-label="Редактировать статусы (вход для администратора)" style="width: 32px; height: 32px; border: 0; border-radius: 6px; background: transparent; color: #5C5C73; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4Z"></path><path d="m13.5 6.5 4 4"></path></svg></button>
+        
+      </div>
+      
+        <div style="display: flex; align-items: center; gap: 2px; min-height: 32px;">
+          <span style="flex: none; width: 16px; height: 16px; border-radius: 3px; background: #FFFFFF; box-shadow: inset 0 0 0 1.5px #0000FF;"></span>
+          
+          <span style="flex: 1; min-width: 0; font-size: 14px; line-height: 1.3; padding-left: 10px;">Pre-GA</span>
+          
+        </div>
+      
+        <div style="display: flex; align-items: center; gap: 2px; min-height: 32px;">
+          <span style="flex: none; width: 16px; height: 16px; border-radius: 3px; background: #0000FF;"></span>
+          
+          <span style="flex: 1; min-width: 0; font-size: 14px; line-height: 1.3; padding-left: 10px;">GA</span>
+          
+        </div>
+      
+        <div style="display: flex; align-items: center; gap: 2px; min-height: 32px;">
+          <span style="flex: none; width: 16px; height: 16px; border-radius: 3px; background: #E0E0F5;"></span>
+          
+          <span style="flex: 1; min-width: 0; font-size: 14px; line-height: 1.3; padding-left: 10px;">Поддержка продаж</span>
+          
+        </div>
+      
+      
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 8px;">
+      <div style="display: flex; align-items: center; gap: 4px;">
+        <span style="font-size: 13px; font-weight: 500; color: #5C5C73; margin-right: auto;">Выходы в GA · 2027</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px;">
+        
+          <div role="img" aria-label="январь: нет выходов в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5C5C73;"><span style="font-size: 13px;">Янв</span><span style="display: flex; gap: 3px; height: 6px;"></span></div>
+        
+          <div role="img" aria-label="февраль: 1 продукт в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #F2F2FE; color: #000000; font-weight: 500;"><span style="font-size: 13px;">Фев</span><span style="display: flex; gap: 3px; height: 6px;"><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span></span></div>
+        
+          <div role="img" aria-label="март: нет выходов в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5C5C73;"><span style="font-size: 13px;">Мар</span><span style="display: flex; gap: 3px; height: 6px;"></span></div>
+        
+          <div role="img" aria-label="апрель: 2 продукта в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #F2F2FE; color: #000000; font-weight: 500;"><span style="font-size: 13px;">Апр</span><span style="display: flex; gap: 3px; height: 6px;"><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span></span></div>
+        
+          <div role="img" aria-label="май: 2 продукта в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #F2F2FE; color: #000000; font-weight: 500;"><span style="font-size: 13px;">Май</span><span style="display: flex; gap: 3px; height: 6px;"><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span></span></div>
+        
+          <div role="img" aria-label="июнь: нет выходов в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5C5C73;"><span style="font-size: 13px;">Июн</span><span style="display: flex; gap: 3px; height: 6px;"></span></div>
+        
+          <div role="img" aria-label="июль: нет выходов в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5C5C73;"><span style="font-size: 13px;">Июл</span><span style="display: flex; gap: 3px; height: 6px;"></span></div>
+        
+          <div role="img" aria-label="август: 3 продукта в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #F2F2FE; color: #000000; font-weight: 500;"><span style="font-size: 13px;">Авг</span><span style="display: flex; gap: 3px; height: 6px;"><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span></span></div>
+        
+          <div role="img" aria-label="сентябрь: 2 продукта в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #F2F2FE; color: #000000; font-weight: 500;"><span style="font-size: 13px;">Сен</span><span style="display: flex; gap: 3px; height: 6px;"><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span><span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span></span></div>
+        
+          <div role="img" aria-label="октябрь: нет выходов в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5C5C73;"><span style="font-size: 13px;">Окт</span><span style="display: flex; gap: 3px; height: 6px;"></span></div>
+        
+          <div role="img" aria-label="ноябрь: нет выходов в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5C5C73;"><span style="font-size: 13px;">Ноя</span><span style="display: flex; gap: 3px; height: 6px;"></span></div>
+        
+          <div role="img" aria-label="декабрь: нет выходов в GA" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5C5C73;"><span style="font-size: 13px;">Дек</span><span style="display: flex; gap: 3px; height: 6px;"></span></div>
+        
+      </div>
+      <span style="font-size: 12px; color: #5C5C73; line-height: 1.4;">Квадратики — сколько продуктов выходит в GA в этом месяце</span>
+    </div>
+  </nav>
+  
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;">
+
+    <header style="position: relative; overflow: hidden; background: #FFFFFF; border-radius: 12px; padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px; min-height: 148px; box-sizing: border-box;">
+      <svg aria-hidden="true" style="position: absolute; right: 0; top: 0; height: 100%; width: 460px;" viewBox="0 0 460 156" preserveAspectRatio="xMaxYMid slice">
+        <defs>
+          <pattern id="tri-main" width="60" height="103.92" patternUnits="userSpaceOnUse" x="460"><path d="M0 0L60 103.92M60 0L0 103.92M0 0H60M0 51.96H60" fill="none" stroke="#0000FF" stroke-width="1"></path></pattern>
+          <linearGradient id="fade-main" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0"></stop><stop offset="0.75" stop-color="#FFFFFF" stop-opacity="1"></stop></linearGradient>
+          <mask id="mask-main"><rect width="460" height="156" fill="url(#fade-main)"></rect></mask>
+        </defs>
+        <rect width="460" height="156" fill="url(#tri-main)" mask="url(#mask-main)" opacity="0.55"></rect>
+      </svg>
+      <div style="position: relative; display: flex; flex-direction: column; gap: 10px; margin-right: auto;">
+        <h1 style="margin: 0; font-size: 36px; font-weight: 400; line-height: 1;">Календарь выхода продуктов</h1>
+        <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #44445C;">
+          <button type="button" aria-label="Предыдущий год" style="width: 32px; height: 32px; border: 1px solid #E0E0F5; border-radius: 6px; background: #FFFFFF; color: #000000; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m15 6-6 6 6 6"></path></svg></button>
+          <span style="font-size: 18px; color: #000000; font-weight: 500;">2027</span>
+          <button type="button" aria-label="Следующий год" style="width: 32px; height: 32px; border: 1px solid #E0E0F5; border-radius: 6px; background: #FFFFFF; color: #000000; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m9 6 6 6-6 6"></path></svg></button>
+          <span>10 продуктов · 4 направления</span>
+        </div>
+      </div>
+      <div style="position: relative; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+        <label style="display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid #8A8AC2; border-radius: 8px; padding: 0 12px; height: 44px; width: 280px; max-width: 100%; box-sizing: border-box; color: #5C5C73;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Поиск</span><input type="search" placeholder="Найти продукт" style="border: 0; outline: 0; font: inherit; font-size: 14px; background: transparent; flex: 1; min-width: 0; color: #000000;"></label>
+        
+      </div>
+    </header>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+      <button type="button" style="height: 36px; padding: 0 12px; margin-left: -12px; border: 0; border-radius: 6px; background: transparent; font: inherit; font-size: 13px; color: #0000FF; cursor: pointer;">Свернуть все</button>
+      <button type="button" style="height: 36px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; font: inherit; font-size: 13px; color: #0000FF; cursor: pointer;">Развернуть все</button>
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-left: auto; font-size: 13px; color: #44445C;">
+        <span style="display: flex; align-items: center; gap: 8px;"><span style="width: 18px; height: 10px; border-radius: 2px; background: #FFFFFF; box-shadow: inset 0 0 0 1.5px #0000FF;"></span>Pre-GA</span>
+        <span style="display: flex; align-items: center; gap: 8px;"><span style="width: 18px; height: 10px; border-radius: 2px; background: #0000FF;"></span>GA</span>
+        <span style="display: flex; align-items: center; gap: 8px;"><span style="width: 18px; height: 10px; border-radius: 2px; background: #E0E0F5;"></span>Поддержка продаж</span>
+      </div>
+    </div>
+
+    <section aria-label="Календарь на 2027 год" style="background: #FFFFFF; border-radius: 12px; overflow-x: auto;">
+      <div style="min-width: 1000px;">
+        <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #E0E0F5;">
+          <div style="padding: 16px 20px; font-size: 13px; font-weight: 500; color: #5C5C73;">Продукт</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Янв</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Фев</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Мар</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Апр</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Май</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Июн</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Июл</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Авг</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Сен</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Окт</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Ноя</div>
+          
+            <div style="padding: 16px 4px; font-size: 13px; font-weight: 500; color: #44445C; text-align: center; border-left: 1px solid #F2F2FE;">Дек</div>
+          
+        </div>
+        
+          
+            <button type="button" aria-expanded="true" style="width: 100%; min-height: 48px; display: flex; align-items: center; gap: 10px; padding: 8px 20px; border: 0; border-bottom: 1px solid #E0E0F5; background: #F2F2FE; font: inherit; color: #000000; text-align: left; cursor: pointer;">
+              <svg aria-hidden="true" style="flex: none; transition: transform 0.15s; transform: rotate(0deg);" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              <span style="font-size: 15px; font-weight: 500;">Серверы</span>
+              <span style="font-size: 13px; color: #44445C;">3 продукта</span>
+              <span style="font-size: 13px; color: #0000FF;"></span>
+            </button>
+          
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">VEGMAN R215 G4</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — февраль</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 3 / 4; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 4 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">VEGMAN R220S G4</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — апрель</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 2 / 5; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #FFFFFF; color: #0000FF; box-shadow: inset 0 0 0 1.5px #0000FF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pre-GA</span></div>
+              
+                <div style="grid-column: 5 / 6; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 6 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">VEGMAN R120S G4</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — август</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 6 / 9; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #FFFFFF; color: #0000FF; box-shadow: inset 0 0 0 1.5px #0000FF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pre-GA</span></div>
+              
+                <div style="grid-column: 9 / 10; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 10 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+          
+            <button type="button" aria-expanded="true" style="width: 100%; min-height: 48px; display: flex; align-items: center; gap: 10px; padding: 8px 20px; border: 0; border-bottom: 1px solid #E0E0F5; background: #F2F2FE; font: inherit; color: #000000; text-align: left; cursor: pointer;">
+              <svg aria-hidden="true" style="flex: none; transition: transform 0.15s; transform: rotate(0deg);" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              <span style="font-size: 15px; font-weight: 500;">Системы хранения данных</span>
+              <span style="font-size: 13px; color: #44445C;">4 продукта</span>
+              <span style="font-size: 13px; color: #0000FF;"></span>
+            </button>
+          
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">TATLIN.UNIFIED G3</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — апрель</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 2 / 5; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #FFFFFF; color: #0000FF; box-shadow: inset 0 0 0 1.5px #0000FF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pre-GA</span></div>
+              
+                <div style="grid-column: 5 / 6; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 6 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">TATLIN.ENTRY</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — май</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 3 / 6; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #FFFFFF; color: #0000FF; box-shadow: inset 0 0 0 1.5px #0000FF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pre-GA</span></div>
+              
+                <div style="grid-column: 6 / 7; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 7 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">TATLIN.DATACUBE</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — сентябрь</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 7 / 10; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #FFFFFF; color: #0000FF; box-shadow: inset 0 0 0 1.5px #0000FF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pre-GA</span></div>
+              
+                <div style="grid-column: 10 / 11; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 11 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">TATLIN.OBJECT v2.0</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — сентябрь</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 7 / 10; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #FFFFFF; color: #0000FF; box-shadow: inset 0 0 0 1.5px #0000FF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pre-GA</span></div>
+              
+                <div style="grid-column: 10 / 11; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 11 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+          
+            <button type="button" aria-expanded="true" style="width: 100%; min-height: 48px; display: flex; align-items: center; gap: 10px; padding: 8px 20px; border: 0; border-bottom: 1px solid #E0E0F5; background: #F2F2FE; font: inherit; color: #000000; text-align: left; cursor: pointer;">
+              <svg aria-hidden="true" style="flex: none; transition: transform 0.15s; transform: rotate(0deg);" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              <span style="font-size: 15px; font-weight: 500;">Коммутаторы</span>
+              <span style="font-size: 13px; color: #44445C;">2 продукта</span>
+              <span style="font-size: 13px; color: #0000FF;"></span>
+            </button>
+          
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">SE C4034F</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — август</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 6 / 9; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #FFFFFF; color: #0000FF; box-shadow: inset 0 0 0 1.5px #0000FF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pre-GA</span></div>
+              
+                <div style="grid-column: 9 / 10; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 10 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">SE C4000</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — август</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 6 / 9; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #FFFFFF; color: #0000FF; box-shadow: inset 0 0 0 1.5px #0000FF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pre-GA</span></div>
+              
+                <div style="grid-column: 9 / 10; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 10 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+          
+            <button type="button" aria-expanded="true" style="width: 100%; min-height: 48px; display: flex; align-items: center; gap: 10px; padding: 8px 20px; border: 0; border-bottom: 1px solid #E0E0F5; background: #F2F2FE; font: inherit; color: #000000; text-align: left; cursor: pointer;">
+              <svg aria-hidden="true" style="flex: none; transition: transform 0.15s; transform: rotate(0deg);" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              <span style="font-size: 15px; font-weight: 500;">Системы охлаждения BOREY</span>
+              <span style="font-size: 13px; color: #44445C;">1 продукт</span>
+              <span style="font-size: 13px; color: #0000FF;"></span>
+            </button>
+          
+          
+        
+          
+          
+            <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
+              <div style="grid-column: 1; grid-row: 1; padding: 8px 12px 8px 46px; display: flex; align-items: center; gap: 6px; min-width: 0;">
+                <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; margin-right: auto;">
+                  <a href="04-product.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #000000; text-decoration: none;">Контроллер управления v2.0</a>
+                  <span style="font-size: 12px; color: #5C5C73;">GA — май</span>
+                </div>
+                
+              </div>
+              
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 7; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 8; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 9; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 10; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 11; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 12; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+                <div style="grid-column: 13; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>
+              
+              
+                <div style="grid-column: 3 / 6; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #FFFFFF; color: #0000FF; box-shadow: inset 0 0 0 1.5px #0000FF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pre-GA</span></div>
+              
+                <div style="grid-column: 6 / 7; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #0000FF; color: #FFFFFF; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">GA</span></div>
+              
+                <div style="grid-column: 7 / 14; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; background: #E0E0F5; color: #000000; font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Поддержка продаж</span></div>
+              
+            </div>
+          
+        
+      </div>
+    </section>
+
+    <div style="display: flex; align-items: baseline; gap: 12px; margin-top: 12px;">
+      <h2 style="margin: 0; font-size: 24px; font-weight: 400;">Ближайшие выходы в GA</h2>
+      <span style="font-size: 14px; color: #5C5C73;">первое полугодие 2027</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px;">
+      
+        <a href="04-product.html" style="display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; border-radius: 12px; padding: 20px; color: #000000; text-decoration: none;">
+          <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 28px; font-weight: 400; color: #0000FF; line-height: 1;">Фев</span><span style="font-size: 14px; color: #5C5C73;">2027</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 16px; font-weight: 300; line-height: 1.25;">VEGMAN R215 G4</span><span style="font-size: 13px; color: #5C5C73;">Серверы</span></div>
+          <div style="font-size: 13px; color: #44445C; line-height: 1.5; border-top: 1px solid #E0E0F5; padding-top: 12px;">Без этапа Pre-GA. После GA — поддержка продаж</div>
+        </a>
+      
+        <a href="04-product.html" style="display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; border-radius: 12px; padding: 20px; color: #000000; text-decoration: none;">
+          <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 28px; font-weight: 400; color: #0000FF; line-height: 1;">Апр</span><span style="font-size: 14px; color: #5C5C73;">2027</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 16px; font-weight: 300; line-height: 1.25;">VEGMAN R220S G4</span><span style="font-size: 13px; color: #5C5C73;">Серверы</span></div>
+          <div style="font-size: 13px; color: #44445C; line-height: 1.5; border-top: 1px solid #E0E0F5; padding-top: 12px;">Pre-GA: январь – март. После GA — поддержка продаж</div>
+        </a>
+      
+        <a href="04-product.html" style="display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; border-radius: 12px; padding: 20px; color: #000000; text-decoration: none;">
+          <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 28px; font-weight: 400; color: #0000FF; line-height: 1;">Апр</span><span style="font-size: 14px; color: #5C5C73;">2027</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 16px; font-weight: 300; line-height: 1.25;">TATLIN.UNIFIED G3</span><span style="font-size: 13px; color: #5C5C73;">Системы хранения данных</span></div>
+          <div style="font-size: 13px; color: #44445C; line-height: 1.5; border-top: 1px solid #E0E0F5; padding-top: 12px;">Pre-GA: январь – март. После GA — поддержка продаж</div>
+        </a>
+      
+        <a href="04-product.html" style="display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; border-radius: 12px; padding: 20px; color: #000000; text-decoration: none;">
+          <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 28px; font-weight: 400; color: #0000FF; line-height: 1;">Май</span><span style="font-size: 14px; color: #5C5C73;">2027</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 16px; font-weight: 300; line-height: 1.25;">TATLIN.ENTRY</span><span style="font-size: 13px; color: #5C5C73;">Системы хранения данных</span></div>
+          <div style="font-size: 13px; color: #44445C; line-height: 1.5; border-top: 1px solid #E0E0F5; padding-top: 12px;">Pre-GA: февраль – апрель. После GA — поддержка продаж</div>
+        </a>
+      
+        <a href="04-product.html" style="display: flex; flex-direction: column; gap: 14px; background: #FFFFFF; border-radius: 12px; padding: 20px; color: #000000; text-decoration: none;">
+          <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 28px; font-weight: 400; color: #0000FF; line-height: 1;">Май</span><span style="font-size: 14px; color: #5C5C73;">2027</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 16px; font-weight: 300; line-height: 1.25;">Контроллер управления v2.0</span><span style="font-size: 13px; color: #5C5C73;">Системы охлаждения BOREY</span></div>
+          <div style="font-size: 13px; color: #44445C; line-height: 1.5; border-top: 1px solid #E0E0F5; padding-top: 12px;">Pre-GA: февраль – апрель. После GA — поддержка продаж</div>
+        </a>
+      
+    </div>
+  </main>
+
+  
+</div>
+</body>
+</html>

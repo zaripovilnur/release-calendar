@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Файлы и ссылки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F2FE}
+a{color:#0000FF}a:hover{color:#0000B3}
+</style>
+</helmet>
+<div style="font-family: 'TT Norms Pro', Manrope, system-ui, sans-serif; color: #000000; background: #F2F2FE; display: flex; flex-wrap: wrap; min-height: 1100px; box-sizing: border-box;">
+
+  <sc-if value="{{navClosed}}" hint-placeholder-val="{{ false }}">
+  <nav aria-label="Основное меню" style="flex: none; width: 72px; background: #FFFFFF; border-right: 1px solid #E0E0F5; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+    <button type="button" onClick="{{toggleNav}}" aria-label="Развернуть панель" style="width: 44px; height: 44px; border: 0; border-radius: 8px; background: #0000FF; color: #FFFFFF; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; cursor: pointer;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16M13 10l2 2-2 2"></path></svg></button>
+    <a href="Main.dc.html" aria-label="Календарь" style="width: 44px; height: 44px; border-radius: 8px; color: #44445C; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg></a>
+    <a href="Products.dc.html" aria-label="Все продукты" style="width: 44px; height: 44px; border-radius: 8px; color: #44445C; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></a>
+    <a href="Files.dc.html" aria-label="Файлы и ссылки" style="width: 44px; height: 44px; border-radius: 8px; background: #F2F2FE; color: #0000FF; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.5 12.6 20.9a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"></path></svg></a>
+  </nav>
+  </sc-if>
+
+  <sc-if value="{{navOpen}}" hint-placeholder-val="{{ true }}">
+  <nav aria-label="Основное меню" style="flex: 1 1 256px; max-width: 280px; min-width: 232px; background: #FFFFFF; border-right: 1px solid #E0E0F5; padding: 22px 16px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px;">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px;">
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-right: auto;">
+        <img src="/_blob/e851b17aec1390b6b8e5ba53f5bc1a5e" alt="YADRO" style="width: 96px; height: auto; display: block;">
+        <span style="font-size: 13px; color: #5C5C73;">Календарь релизов</span>
+      </div>
+      <button type="button" onClick="{{toggleNav}}" aria-label="Свернуть панель" style="width: 40px; height: 40px; border: 0; border-radius: 8px; background: #F2F2FE; color: #44445C; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16M15 10l-2 2 2 2"></path></svg></button>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <a href="Main.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; color: #000000; font-size: 15px; text-decoration: none;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Календарь</a>
+      <a href="Products.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; color: #000000; font-size: 15px; text-decoration: none;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>Все продукты</a>
+      <a href="Files.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; background: #F2F2FE; color: #0000FF; font-weight: 500; font-size: 15px; text-decoration: none;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.5 12.6 20.9a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"></path></svg>Файлы и ссылки</a>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 8px;">
+      <span style="font-size: 13px; font-weight: 500; color: #5C5C73; min-height: 32px; display: flex; align-items: center;">Тип материала</span>
+      <sc-for list="{{cats}}" as="c" hint-placeholder-count="7">
+        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; min-height: 32px; cursor: pointer;"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #0000FF; flex: none; margin: 0;"><span style="flex: 1; min-width: 0; line-height: 1.3;">{{c.name}}</span><span style="font-size: 13px; color: #5C5C73;">{{c.n}}</span></label>
+      </sc-for>
+    </div>
+  </nav>
+  </sc-if>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;">
+    <header style="background: #FFFFFF; border-radius: 12px; padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px;">
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-right: auto;">
+        <h1 style="margin: 0; font-size: 36px; font-weight: 400; line-height: 1;">Файлы и ссылки</h1>
+        <span style="font-size: 15px; color: #44445C;">Все материалы по продуктам в одном месте</span>
+      </div>
+      <label style="display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid #8A8AC2; border-radius: 8px; padding: 0 12px; height: 44px; width: 300px; max-width: 100%; box-sizing: border-box; color: #5C5C73;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Поиск материала</span><input type="search" placeholder="Название файла или ссылки" style="border: 0; outline: 0; font: inherit; font-size: 14px; background: transparent; flex: 1; min-width: 0; color: #000000;"></label>
+      <a href="AddMaterial.dc.html" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 8px; background: #0000FF; color: #FFFFFF; font-size: 14px; font-weight: 500; text-decoration: none;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Добавить материал</a>
+    </header>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+      <div role="group" aria-label="Вид материалов" style="display: flex; background: #E0E0F5; border-radius: 8px; padding: 4px; gap: 2px;">
+        <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+          <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="{{t.style}}">{{t.label}}</button>
+        </sc-for>
+      </div>
+      <button type="button" style="height: 36px; padding: 0 14px; border: 1px solid #8A8AC2; border-radius: 6px; background: #FFFFFF; font: inherit; font-size: 13px; color: #000000;">Направление: все ▾</button>
+      <button type="button" style="height: 36px; padding: 0 14px; border: 1px solid #8A8AC2; border-radius: 6px; background: #FFFFFF; font: inherit; font-size: 13px; color: #000000;">Продукт: все ▾</button>
+      <button type="button" style="height: 36px; padding: 0 14px; border: 1px solid #8A8AC2; border-radius: 6px; background: #FFFFFF; font: inherit; font-size: 13px; color: #000000; margin-left: auto;">Сначала новые ▾</button>
+    </div>
+
+    <section aria-label="Материалы" style="background: #FFFFFF; border-radius: 12px; overflow-x: auto;">
+      <div style="min-width: 900px;">
+        <div style="display: grid; grid-template-columns: 48px minmax(0, 2.4fr) 1fr 1.4fr 1.1fr 48px; gap: 16px; padding: 14px 24px; border-bottom: 1px solid #E0E0F5; font-size: 13px; font-weight: 500; color: #5C5C73;">
+          <span></span><span>Название</span><span>Тип</span><span>Продукт</span><span>Добавлено</span><span></span>
+        </div>
+        <sc-for list="{{items}}" as="i" hint-placeholder-count="10">
+          <div style="display: grid; grid-template-columns: 48px minmax(0, 2.4fr) 1fr 1.4fr 1.1fr 48px; gap: 16px; align-items: center; padding: 12px 24px; border-bottom: 1px solid #F2F2FE;">
+            <span style="width: 44px; height: 44px; border-radius: 6px; background: #F2F2FE; color: #0000FF; font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center;">{{i.badge}}</span>
+            <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;"><span style="font-size: 15px;">{{i.name}}</span><span style="font-size: 12px; color: #5C5C73;">{{i.note}}</span></div>
+            <span style="font-size: 14px; color: #44445C;">{{i.cat}}</span>
+            <a href="Product.dc.html" style="font-size: 16px; font-weight: 300; line-height: 1.25; color: #0000FF; text-decoration: none;">{{i.product}}</a>
+            <span style="font-size: 13px; color: #5C5C73;">{{i.when}}</span>
+            <button type="button" aria-label="{{i.action}}" style="width: 40px; height: 40px; border: 1px solid #E0E0F5; border-radius: 6px; background: #FFFFFF; color: #000000; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{i.icon}}"></path></svg></button>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var tab = st.tab || 'all';
+    var open = 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5';
+    var down = 'M12 4v11m0 0-4-4m4 4 4-4M5 20h14';
+    var p = 'TATLIN.UNIFIED G3';
+    var all = [
+      { kind: 'file', badge: 'PPTX', name: 'Презентация продукта.pptx', note: 'Финальная для партнёров · версия 3', cat: 'Презентации', product: p, when: '24 окт · [автор]' },
+      { kind: 'link', badge: 'Figma', name: 'Макеты и креативы', note: 'Ссылка', cat: 'Макеты', product: p, when: '23 окт · [автор]' },
+      { kind: 'file', badge: 'ZIP', name: 'Логотипы и шаблоны баннеров.zip', note: 'Для соцсетей и медийной рекламы · версия 1', cat: 'Визуалы', product: p, when: '22 окт · [автор]' },
+      { kind: 'link', badge: 'Табл.', name: 'Медиаплан запуска', note: 'Ссылка', cat: 'Планы', product: p, when: '21 окт · [автор]' },
+      { kind: 'link', badge: 'Wiki', name: 'Описание и ключевые преимущества', note: 'Ссылка', cat: 'Документы', product: p, when: '20 окт · [автор]' },
+      { kind: 'file', badge: 'PDF', name: 'Технические характеристики.pdf', note: 'От продуктовой команды · версия 1', cat: 'Документы', product: p, when: '18 окт · [автор]' },
+      { kind: 'link', badge: 'Docs', name: 'Пресс-релиз, черновик', note: 'Ссылка', cat: 'Тексты', product: p, when: '15 окт · [автор]' },
+      { kind: 'link', badge: 'Сайт', name: 'Страница продукта на сайте', note: 'Ссылка', cat: 'Сайт', product: p, when: '14 окт · [автор]' },
+      { kind: 'file', badge: 'DOCX', name: 'Бриф на запуск.docx', note: 'Цели, аудитория, каналы · версия 2', cat: 'Документы', product: p, when: '10 окт · [автор]' },
+      { kind: 'link', badge: 'Диск', name: 'Фото и видео продукта', note: 'Ссылка', cat: 'Визуалы', product: p, when: '8 окт · [автор]' }
+    ];
+    var items = all.filter(function (i) { return tab === 'all' || i.kind === tab; }).map(function (i) {
+      return Object.assign({}, i, { icon: i.kind === 'file' ? down : open, action: i.kind === 'file' ? 'Скачать файл' : 'Открыть ссылку' });
+    });
+    var nLinks = all.filter(function (i) { return i.kind === 'link'; }).length;
+    var tabs = [['all', 'Все · ' + all.length], ['link', 'Ссылки · ' + nLinks], ['file', 'Файлы · ' + (all.length - nLinks)]].map(function (t) {
+      var on = t[0] === tab;
+      return { label: t[1], pressed: on ? 'true' : 'false', pick: function () { self.setState({ tab: t[0] }); },
+        style: 'height: 34px; padding: 0 14px; border: 0; border-radius: 6px; font: inherit; font-size: 13px; cursor: pointer; ' + (on ? 'background: #FFFFFF; color: #0000FF; font-weight: 500;' : 'background: transparent; color: #000000;') };
+    });
+    var cats = [['Презентации', 1], ['Макеты', 1], ['Визуалы', 2], ['Документы', 3], ['Тексты', 1], ['Планы', 1], ['Сайт', 1]].map(function (c) { return { name: c[0], n: c[1] }; });
+    return {
+      items: items, tabs: tabs, cats: cats,
+      navOpen: !st.navClosed, navClosed: !!st.navClosed,
+      toggleNav: function () { self.setState({ navClosed: !(self.state && self.state.navClosed) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import {
   MSHORT, MGEN, MLOWER, KEY_PRE, KEY_SUPPORT, esc, plural, ym, today, api, isMobile, onMobileChange,
-  loadState, gaStage, stageOf, selectedYear, monthName, rangeName, swatchCss, shortDate, linkTag, fileExt,
+  loadState, gaStage, stageOf, selectedYear, monthName, rangeName, swatchCss, shortDate, categoryShort, fileExt,
   stripExt, collapsedNav, ICON,
 } from './common.js';
 import { openMaterialModal } from './modal-material.js';
@@ -199,7 +199,7 @@ function renderMobile() {
   ].filter(Boolean).join('\n      ');
   const links = pinnedLinks().map((m) => `
       <a href="${esc(m.url)}" target="_blank" rel="noopener" style="background: #FFFFFF; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; color: #000000; text-decoration: none; min-height: 56px; box-sizing: border-box;">
-        <span style="flex: none; width: 40px; height: 40px; border-radius: 6px; background: #F2F2FE; color: #0000FF; font-size: 10px; font-weight: 500; display: flex; align-items: center; justify-content: center;">${esc(linkTag(m.url))}</span>
+        <span style="flex: none; width: 40px; height: 40px; border-radius: 6px; background: #F2F2FE; color: #0000FF; font-size: 10px; font-weight: 500; display: flex; align-items: center; justify-content: center;">${esc(categoryShort(m.category))}</span>
         <span style="font-size: 15px; margin-right: auto;">${esc(m.title)}</span>
         ${ICON.arrowUpRight16}
       </a>`).join('');

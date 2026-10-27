@@ -1,5 +1,5 @@
 import {
-  esc, storage, store, loadState, api, shortDate, linkTag, fileExt, openNav, collapsedNav, navClosed, toggleNav,
+  esc, storage, store, loadState, api, shortDate, categoryShort, fileExt, openNav, collapsedNav, navClosed, toggleNav,
   bottomNav, searchBox, chipSelect, ICON, renderKeepingFocus,
 } from './common.js';
 import { openMaterialModal } from './modal-material.js';
@@ -43,7 +43,7 @@ function filtered() {
 
 function row(m) {
   const isFile = m.kind === 'file';
-  const badge = isFile ? fileExt(m.title) : linkTag(m.url);
+  const badge = isFile ? fileExt(m.title) : categoryShort(m.category);
   const note = isFile ? `${m.note ? m.note + ' · ' : ''}версия ${m.version}` : 'Ссылка';
   const action = isFile ? 'Скачать файл' : 'Открыть ссылку';
   return `

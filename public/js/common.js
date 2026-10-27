@@ -159,16 +159,10 @@ export function contrastText(hex) {
   return (1.05 / (L + 0.05)) >= ((L + 0.05) / 0.05) ? '#FFFFFF' : '#000000';
 }
 
-// Метка ссылки по домену
-export function linkTag(url) {
-  let host = '', href = '';
-  try { const u = new URL(url); host = u.hostname.toLowerCase(); href = (u.hostname + u.pathname).toLowerCase(); } catch { href = String(url).toLowerCase(); }
-  if (host === 'figma.com' || host.endsWith('.figma.com')) return 'Figma';
-  if (href.startsWith('docs.google.com/spreadsheets') || host.startsWith('sheets.') || host.includes('.sheets.')) return 'Табл.';
-  if (host === 'docs.google.com') return 'Docs';
-  if (href.includes('wiki') || href.includes('confluence')) return 'Wiki';
-  if (host === 'drive.google.com' || host.startsWith('disk.yandex')) return 'Диск';
-  return 'Сайт';
+// Тип материала для узкого квадратика (40–44 px): длинные названия сокращаем
+const CATEGORY_SHORT = { 'Презентации': 'Презен.', 'Визуалы': 'Визуал.', 'Документы': 'Докум.' };
+export function categoryShort(category) {
+  return CATEGORY_SHORT[category] || category;
 }
 
 export function fileExt(name) {

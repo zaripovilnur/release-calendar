@@ -279,7 +279,13 @@ api.post('/products/:id/release', requireAdmin, (req, res) => {
   const id = toId(req.params.id);
   if (!id || !db.prepare('SELECT 1 FROM products WHERE id = ?').get(id)) return bad(res, 'Продукт не найден', 404);
   const released = !!(req.body && req.body.released);
-  db.prepare('UPDATE products SET released_at = ? WHERE id = ?').run(released ? nowLocal() : null, id);
+  const now = nowLocal();
+  db.transaction(() => {
+    db.prepare('UPDATE products SET released_at = ? WHERE id = ?').run(released ? now : null, id);
+    // Отметка и её снятие видны в «Истории сроков»
+    db.prepare('INSERT INTO date_history (product_id, text, reason, author, created_at) VALUES (?, ?, NULL, ?, ?)')
+      .run(id, released ? 'Релиз состоялся' : 'Отметка о релизе снята', author(req), now);
+  })();
   res.json({ ok: true });
 });
 

@@ -68,7 +68,7 @@ function renderDesktop() {
 
   const pins = pinnedLinks().map((m) => `
                 <a href="${esc(m.url)}" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 10px; background: #F2F2FE; border-radius: 8px; padding: 16px; color: #000000; text-decoration: none;">
-                  <div style="display: flex; align-items: center; justify-content: space-between;"><span style="font-size: 12px; font-weight: 500; color: #0000FF;">${esc(linkTag(m.url))}</span>${ICON.arrowUpRight14}</div>
+                  <div style="display: flex; align-items: center; justify-content: space-between;"><span style="font-size: 12px; font-weight: 500; color: #0000FF;">${esc(m.category)}</span>${ICON.arrowUpRight14}</div>
                   <span style="font-size: 15px;">${esc(m.title)}</span>
                   <span style="font-size: 12px; color: #5C5C73;">${esc(m.note || 'обновлено ' + shortDate(m.date))}</span>
                 </a>`).join('');

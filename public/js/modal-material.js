@@ -43,7 +43,8 @@ export function openMaterialModal(state, { productId = null, tab = 'link', files
     if (!pid || existingFiles[pid]) return;
     const d = await api(`/api/products/${pid}`);
     existingFiles[pid] = Object.fromEntries(d.materials.filter((x) => x.kind === 'file').map((x) => [x.title, x.version]));
-    render();
+    // Перерисовываем, только если список нужен прямо сейчас (плашка «версия N»), — иначе собьём ввод в полях
+    if (m.tab === 'file' && m.queue.length) render();
   }
 
   function productSelect() {

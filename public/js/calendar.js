@@ -6,12 +6,15 @@ import {
 } from './common.js';
 import { openProductModal } from './modal-product.js';
 
+const MPREP = ['январе', 'феврале', 'марте', 'апреле', 'мае', 'июне', 'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре'];
+
 const root = document.getElementById('app');
 let state = null;
 let year = null;
 let search = '';
 let showLogin = false;
 let mobileMonth = null;
+let gaFilter = null; // месяц из блока «Выходы в GA»: в таблице только продукты с GA в этом месяце
 
 const dirFilter = () => storage('calendarDirsOff', []);
 const collapsedGroups = () => storage('calendarCollapsed', []);
@@ -130,13 +133,24 @@ function sidebarSections(products) {
           ${smallBtn('delete-status', s.id, 'Удалить статус', ICON.trash)}
         </div>`).join('');
 
-  const gaCount = Array(12).fill(0);
-  for (const p of products) { const m = gaMonth(p); if (m) gaCount[m - 1]++; }
+  // Квадратик на каждый продукт с GA в месяце: синий — ждём, зелёный — релиз состоялся.
+  // Месяц с выходами — кнопка: фильтрует таблицу, повторное нажатие снимает фильтр
+  const byMonth = Array.from({ length: 12 }, () => []);
+  for (const p of products) { const m = gaMonth(p); if (m) byMonth[m - 1].push(p); }
   const grid = MSHORT.map((n, i) => {
-    const c = gaCount[i];
-    const dots = '<span style="width: 6px; height: 6px; background: #0000FF; border-radius: 1px;"></span>'.repeat(c);
+    const list = byMonth[i];
+    const c = list.length;
+    const dots = list.map((p) => `<span style="width: 6px; height: 6px; background: ${p.releasedAt ? RELEASED_GREEN : '#0000FF'}; border-radius: 1px;"></span>`).join('');
+    const released = list.filter((p) => p.releasedAt).length;
+    const label = `${MNOM[i]}: ${c ? pluralProducts(c) + ' в GA' + (released ? `, состоялось: ${released}` : '') : 'нет выходов в GA'}`;
+    const inner = `<span style="font-size: 13px;">${n}</span><span style="display: flex; gap: 3px; height: 6px;">${dots}</span>`;
+    if (!c) {
+      return `
+          <div role="img" aria-label="${label}" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5C5C73;">${inner}</div>`;
+    }
+    const on = gaFilter === i + 1;
     return `
-          <div role="img" aria-label="${MNOM[i]}: ${c ? pluralProducts(c) + ' в GA' : 'нет выходов в GA'}" style="height: 48px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; ${c ? 'background: #F2F2FE; color: #000000; font-weight: 500;' : 'background: transparent; color: #5C5C73;'}"><span style="font-size: 13px;">${n}</span><span style="display: flex; gap: 3px; height: 6px;">${dots}</span></div>`;
+          <button type="button" data-action="ga-month" data-month="${i + 1}" aria-pressed="${on}" aria-label="${label}" title="Показать только продукты с GA в этом месяце" style="height: 48px; padding: 0; border: 0; border-radius: 6px; font: inherit; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: #F2F2FE; color: #000000; font-weight: 500; cursor: pointer;${on ? ' box-shadow: inset 0 0 0 1.5px #0000FF;' : ''}">${inner}</button>`;
   }).join('');
 
   return `
@@ -169,7 +183,8 @@ function tableRows(products) {
   let html = '';
   for (const d of state.directions) {
     if (off.includes(d.id)) continue;
-    const items = products.filter((p) => p.directionId === d.id && (!q || p.name.toLowerCase().includes(q)));
+    const items = products.filter((p) => p.directionId === d.id && (!q || p.name.toLowerCase().includes(q))
+      && (!gaFilter || gaMonth(p) === gaFilter));
     if (!items.length) continue;
     const isClosed = closed.includes(d.id);
     const gaList = [...new Set(items.map(gaMonth).filter(Boolean))].sort((a, b) => a - b).map((m) => MNOM[m - 1]);
@@ -286,7 +301,8 @@ function renderDesktop() {
 
     <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
       <button type="button" data-action="collapse-all" style="height: 36px; padding: 0 12px; margin-left: -12px; border: 0; border-radius: 6px; background: transparent; font: inherit; font-size: 13px; color: #0000FF; cursor: pointer;">Свернуть все</button>
-      <button type="button" data-action="expand-all" style="height: 36px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; font: inherit; font-size: 13px; color: #0000FF; cursor: pointer;">Развернуть все</button>
+      <button type="button" data-action="expand-all" style="height: 36px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; font: inherit; font-size: 13px; color: #0000FF; cursor: pointer;">Развернуть все</button>${gaFilter ? `
+      <span style="display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 4px 0 12px; border-radius: 6px; background: #0000FF; color: #FFFFFF; font-size: 13px;">GA в ${MPREP[gaFilter - 1]}<button type="button" data-action="ga-month-reset" aria-label="Показать все продукты" style="width: 24px; height: 24px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer;">${ICON.close16}</button></span>` : ''}
       <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-left: auto; font-size: 13px; color: #44445C;">${legend}
       </div>
     </div>
@@ -341,8 +357,10 @@ root.addEventListener('click', async (e) => {
   const id = Number(t.dataset.id);
   switch (t.dataset.action) {
     case 'toggle-nav': toggleNav(); render(); break;
-    case 'prev-year': year -= 1; setYear(year); mobileMonth = null; render(); break;
-    case 'next-year': year += 1; setYear(year); mobileMonth = null; render(); break;
+    case 'prev-year': year -= 1; setYear(year); mobileMonth = null; gaFilter = null; render(); break;
+    case 'next-year': year += 1; setYear(year); mobileMonth = null; gaFilter = null; render(); break;
+    case 'ga-month': { const m = Number(t.dataset.month); gaFilter = gaFilter === m ? null : m; render(); break; }
+    case 'ga-month-reset': gaFilter = null; render(); break;
     case 'toggle-group': toggleInList('calendarCollapsed', id); render(); break;
     case 'collapse-all': store('calendarCollapsed', state.directions.map((d) => d.id)); render(); break;
     case 'expand-all': store('calendarCollapsed', []); render(); break;

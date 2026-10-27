@@ -8,7 +8,7 @@ const { open } = require('./db');
 const { sessionMiddleware, requireAdmin, authRouter } = require('./auth');
 const { nowLocal, isDate, rangeText } = require('./util');
 
-const CATEGORIES = ['Презентации', 'Макеты', 'Визуалы', 'Документы', 'Тексты', 'Планы', 'Сайт'];
+const CATEGORIES = ['Презентации', 'Макеты', 'Визуалы', 'Документы', 'Тексты', 'Сайт', 'Другое'];
 const EMPLOYEE_AUTHOR = 'Сотрудник';
 
 const db = open();

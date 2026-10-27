@@ -13,7 +13,7 @@
     { "kind": "file", "title": "Презентация продукта.pptx", "note": "Финальная для партнёров", "category": "Презентации", "version": 3, "createdAt": "2026-10-24", "author": "[автор]" },
     { "kind": "link", "title": "Макеты и креативы", "url": "https://www.figma.com/", "category": "Макеты", "pinned": true, "createdAt": "2026-10-23", "author": "[автор]" },
     { "kind": "file", "title": "Логотипы и шаблоны баннеров.zip", "note": "Для соцсетей и медийной рекламы", "category": "Визуалы", "version": 1, "createdAt": "2026-10-22", "author": "[автор]" },
-    { "kind": "link", "title": "Медиаплан запуска", "url": "https://docs.google.com/spreadsheets/", "category": "Планы", "pinned": true, "createdAt": "2026-10-21", "author": "[автор]" },
+    { "kind": "link", "title": "Медиаплан запуска", "url": "https://docs.google.com/spreadsheets/", "category": "Другое", "pinned": true, "createdAt": "2026-10-21", "author": "[автор]" },
     { "kind": "link", "title": "Описание и ключевые преимущества", "url": "https://wiki.example/", "category": "Документы", "pinned": true, "createdAt": "2026-10-20", "author": "[автор]" },
     { "kind": "file", "title": "Технические характеристики.pdf", "note": "От продуктовой команды", "category": "Документы", "version": 1, "createdAt": "2026-10-18", "author": "[автор]" },
     { "kind": "link", "title": "Пресс-релиз, черновик", "url": "https://docs.google.com/document/", "category": "Тексты", "pinned": true, "note": "на согласовании", "createdAt": "2026-10-15", "author": "[автор]" },

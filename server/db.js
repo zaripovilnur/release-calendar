@@ -120,6 +120,8 @@ function open() {
   migrateStagesToDates(db);
   db.exec(SCHEMA);
   addReleasedAt(db);
+  // Тип «Планы» заменён на «Другое»
+  db.prepare("UPDATE materials SET category = 'Другое' WHERE category = 'Планы'").run();
   return db;
 }
 

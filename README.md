@@ -54,7 +54,7 @@ npm test
 | `ADMIN_LOGIN`, `ADMIN_PASSWORD` | первый администратор, создаётся при `npm run seed` | `admin` / `admin` — замените |
 | `UPLOAD_DIR` | папка для файлов | `./storage/uploads` |
 | `MAX_UPLOAD_MB` | наибольший размер файла | `200` |
-| `MATTERMOST_URL` | адрес Mattermost с командой, например `https://mattermost.yadro.com/yadro`. Если задан, в команде продукта достаточно написать `@логин` | не задан |
+| `MATTERMOST_URL` | адрес Mattermost с командой: в команде продукта достаточно написать `@логин`. `mattermost://` открывает переписку в приложении, `https://` — в браузере | `mattermost://chat.yadro.com/yadro` |
 
 ## Шрифт
 

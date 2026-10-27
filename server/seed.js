@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const config = require('./config');
 const { open } = require('./db');
-const { normalizeDateTime, monthYear } = require('./util');
+const { normalizeDateTime, monthStart, monthEnd, rangeText } = require('./util');
 
 const IMPORT_AUTHOR = 'Импорт из таблицы';
 const IMPORT_DATE = '2026-10-27T00:00:00';
@@ -40,13 +40,14 @@ function seed(db) {
     const releaseKey = data.statuses.find((s) => s.isRelease).key;
 
     const insProduct = db.prepare("INSERT INTO products (name, direction_id, description, created_at, updated_at) VALUES (?, ?, '', ?, ?)");
-    const insStage = db.prepare('INSERT INTO stages (product_id, status_id, from_month, to_month) VALUES (?, ?, ?, ?)');
+    const insStage = db.prepare('INSERT INTO stages (product_id, status_id, from_date, to_date) VALUES (?, ?, ?, ?)');
     const insHistory = db.prepare('INSERT INTO date_history (product_id, text, reason, author, created_at) VALUES (?, ?, NULL, ?, ?)');
     for (const p of data.products) {
       const id = insProduct.run(p.name, dirIds[p.direction], IMPORT_DATE, IMPORT_DATE).lastInsertRowid;
-      for (const s of p.stages) insStage.run(id, statusIds[s.status], s.from, s.to);
+      // В таблице сроки месяцами: этап идёт с 1-го числа первого месяца по последнее число последнего
+      for (const s of p.stages) insStage.run(id, statusIds[s.status], monthStart(s.from), monthEnd(s.to));
       const ga = p.stages.find((s) => s.status === releaseKey);
-      if (ga) insHistory.run(id, `Сроки внесены: GA — ${monthYear(ga.from)}`, IMPORT_AUTHOR, IMPORT_DATE);
+      if (ga) insHistory.run(id, `Сроки внесены: GA — ${rangeText(monthStart(ga.from), monthEnd(ga.to))}`, IMPORT_AUTHOR, IMPORT_DATE);
     }
 
     const hash = bcrypt.hashSync(config.ADMIN_PASSWORD, 10);

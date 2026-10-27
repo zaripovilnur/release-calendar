@@ -1,6 +1,6 @@
 import {
   MSHORT, MNOM, MGEN, KEY_PRE, KEY_SUPPORT, esc, pluralProducts, pluralDirections, ym, today, storage, store, api,
-  isMobile, onMobileChange, loadState, gaStage, stageOf, inYear, selectedYear, setYear, rangeName,
+  isMobile, onMobileChange, loadState, gaStage, stageOf, inYear, selectedYear, setYear, rangeName, stageSpan,
   statusCss, swatchCss, contrastText, ICON, openNav, collapsedNav, navClosed, toggleNav, bottomNav, searchBox,
   addProductButton, editProductButton, headerRight, loginModal, wireLogin, focusLogin, renderKeepingFocus,
 } from './common.js';
@@ -17,12 +17,6 @@ const dirFilter = () => storage('calendarDirsOff', []);
 const collapsedGroups = () => storage('calendarCollapsed', []);
 
 // Этап, обрезанный по выбранному году: месяцы 1..12
-function clip(st) {
-  const a = ym(st.from), b = ym(st.to);
-  if (a.y > year || b.y < year) return null;
-  return { from: a.y < year ? 1 : a.m, to: b.y > year ? 12 : b.m };
-}
-
 function gaMonth(p) {
   const ga = gaStage(state, p);
   if (!ga) return null;
@@ -192,16 +186,17 @@ function tableRows(products) {
             </button>`;
     if (isClosed) continue;
     for (const p of items) {
-      const m = gaMonth(p);
       const ga = gaStage(state, p);
-      const gaLabel = m ? MNOM[m - 1] : ga ? rangeName({ from: ga.from, to: ga.from }, year) : '';
+      const gaLabel = ga ? rangeName(ga, year) : '';
       let cells = '';
       for (let i = 1; i <= 12; i++) cells += `\n                <div style="grid-column: ${i + 1}; grid-row: 1; border-left: 1px solid #F2F2FE;"></div>`;
       const segs = p.stages.map((st) => {
-        const c = clip(st);
+        const c = stageSpan(st, year, 1, 2);
         const s = state.statusById[st.statusId];
         if (!c || !s) return '';
-        return `\n                <div style="grid-column: ${c.from + 1} / ${c.to + 2}; grid-row: 1; align-self: center; margin: 0 2px; height: 32px; border-radius: 4px; ${statusCss(s)} font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 8px; min-width: 0; z-index: 1;"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${esc(s.name)}</span></div>`;
+        // Этап не целыми месяцами: полоска короче колонок, подпись с датами — при наведении
+        const tip = c.partial ? ` title="${esc(s.name)}: ${esc(rangeName(st, year))}"` : '';
+        return `\n                <div${tip} style="${c.css} align-self: center;${c.margin} height: 32px; border-radius: 4px; ${statusCss(s)} font-size: 13px; display: flex; align-items: center; justify-content: center; padding: 0 ${c.partial ? 4 : 8}px; min-width: ${c.partial ? 6 : 0}px; z-index: ${c.partial ? 2 : 1};"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${esc(s.name)}</span></div>`;
       }).join('');
       html += `
             <div style="display: grid; grid-template-columns: 248px repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #F2F2FE; min-height: 56px;">
@@ -227,7 +222,7 @@ function todayLine() {
   const share = (now.m - 1 + (now.d - 0.5) / days) / 12;
   const label = `Сегодня, ${now.d} ${MGEN[now.m - 1]}`;
   return `
-          <div role="img" aria-label="${label}" title="${label}" style="position: absolute; top: 0; bottom: 0; left: calc(248px + (100% - 248px) * ${share.toFixed(5)} - 1px); width: 2px; background: #FF3B30; z-index: 2; pointer-events: none;"></div>`;
+          <div role="img" aria-label="${label}" title="${label}" style="position: absolute; top: 0; bottom: 0; left: calc(248px + (100% - 248px) * ${share.toFixed(5)} - 1px); width: 2px; background: #FF3B30; z-index: 3; pointer-events: none;"></div>`;
 }
 
 function upcoming(products) {

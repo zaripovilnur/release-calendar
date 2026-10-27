@@ -4,7 +4,7 @@ export const MSHORT = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн
 export const MNOM = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
 export const MGEN = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 export const MLOWER = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-const MDATE = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+export const MDATE = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
 
 export const KEY_PRE = 'pre-ga';
 export const KEY_SUPPORT = 'sales-support';
@@ -27,13 +27,25 @@ export function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-// 'YYYY-MM' → { y, m } (m: 1..12)
+// 'YYYY-MM-DD' (или 'YYYY-MM') → { y, m, d } (m: 1..12)
 export function ym(s) {
-  const [y, m] = s.split('-').map(Number);
-  return { y, m };
+  const [y, m, d = 1] = s.split('-').map(Number);
+  return { y, m, d };
 }
 export function ymStr(y, m) {
   return `${y}-${String(m).padStart(2, '0')}`;
+}
+export function dateStr(y, m, d) {
+  return `${ymStr(y, m)}-${String(d).padStart(2, '0')}`;
+}
+export function lastDay(y, m) {
+  return new Date(y, m, 0).getDate();
+}
+// Следующий день после даты 'YYYY-MM-DD'
+export function nextDay(s) {
+  const { y, m, d } = ym(s);
+  const t = new Date(y, m - 1, d + 1);
+  return dateStr(t.getFullYear(), t.getMonth() + 1, t.getDate());
 }
 
 // Сегодня. В визуальных тестах дата фиксируется через page.clock
@@ -107,7 +119,7 @@ export function gaStage(state, product) {
 }
 
 export function inYear(product, year) {
-  return product.stages.some((st) => st.from <= ymStr(year, 12) && st.to >= ymStr(year, 1));
+  return product.stages.some((st) => st.from <= `${year}-12-31` && st.to >= `${year}-01-01`);
 }
 
 // Год по умолчанию: текущий, если в нём есть этапы; иначе ближайший следующий с этапами
@@ -133,13 +145,56 @@ export function setYear(y) {
   store('year', y);
 }
 
-// Месяц из 'YYYY-MM': «апрель», а если год другой — «апрель 2026»
-export function monthName(s, year, names = MNOM) {
-  const { y, m } = ym(s);
-  return y === year ? names[m - 1] : `${names[m - 1]} ${y}`;
+// Этап занимает целые месяцы: с 1-го числа по последнее
+export function wholeMonths(st) {
+  const a = ym(st.from), b = ym(st.to);
+  return a.d === 1 && b.d === lastDay(b.y, b.m);
 }
-export function rangeName(st, year, names = MNOM) {
-  return st.from === st.to ? monthName(st.from, year, names) : `${monthName(st.from, year, names)} – ${monthName(st.to, year, names)}`;
+
+// Сроки этапа словами. Целыми месяцами — как раньше: «январь – март», «апрель».
+// Иначе с днями: «15 января – 20 марта», «15–20 апреля», «15 апреля».
+// Год добавляется, если он не совпадает с year. short — короткие названия для телефона: «янв – мар», «15 янв – 20 мар»
+export function rangeName(st, year, short = false) {
+  const a = ym(st.from), b = ym(st.to);
+  const yearOf = (x) => (x.y === year ? '' : ` ${x.y}`);
+  if (wholeMonths(st)) {
+    const names = short ? MLOWER : MNOM;
+    const s1 = names[a.m - 1] + yearOf(a), s2 = names[b.m - 1] + yearOf(b);
+    return s1 === s2 ? s1 : `${s1} – ${s2}`;
+  }
+  const names = short ? MDATE : MGEN;
+  if (a.y === b.y && a.m === b.m) {
+    return a.d === b.d ? `${a.d} ${names[a.m - 1]}${yearOf(a)}` : `${a.d}–${b.d} ${names[a.m - 1]}${yearOf(a)}`;
+  }
+  return `${a.d} ${names[a.m - 1]}${yearOf(a)} – ${b.d} ${names[b.m - 1]}${yearOf(b)}`;
+}
+
+// Начало этапа после предлога «с»: «мая» или «15 мая»
+export function sinceName(st, year, short = false) {
+  const a = ym(st.from);
+  const yearOf = a.y === year ? '' : ` ${a.y}`;
+  if (a.d === 1) return MGEN[a.m - 1] + yearOf;
+  return `${a.d} ${(short ? MDATE : MGEN)[a.m - 1]}${yearOf}`;
+}
+
+// Положение полоски этапа в сетке из 12 месяцев выбранного года.
+// Колонки — целые месяцы, начало и конец внутри месяца — отступы в процентах от ширины полоски.
+// offset — сколько колонок слева до января, gap — отступ полоски от границ колонок в px
+export function stageSpan(st, year, offset = 0, gap = 0) {
+  const a = ym(st.from), b = ym(st.to);
+  if (st.from > `${year}-12-31` || st.to < `${year}-01-01`) return null;
+  const from = a.y < year ? 1 : a.m;
+  const to = b.y > year ? 12 : b.m;
+  const startShare = a.y < year ? 0 : (a.d - 1) / lastDay(a.y, a.m);
+  const endShare = b.y > year ? 0 : (lastDay(b.y, b.m) - b.d) / lastDay(b.y, b.m);
+  const months = to - from + 1;
+  const pct = (share) => `${((share / months) * 100).toFixed(3)}%`;
+  const side = (share) => (share ? `calc(${gap}px + ${pct(share)})` : `${gap}px`);
+  const margin = startShare || endShare
+    ? ` margin: 0 ${side(endShare)} 0 ${side(startShare)};`
+    : gap ? ` margin: 0 ${gap}px;` : '';
+  // grid-row: 1 — этапы в одном месяце (GA 7 апреля и поддержка с 8-го) должны стоять в одной строке, а не переноситься
+  return { from, to, css: `grid-column: ${from + offset} / ${to + offset + 1}; grid-row: 1;`, margin, partial: !!(startShare || endShare) };
 }
 
 // Стиль полоски этапа: фон, текст, обводка

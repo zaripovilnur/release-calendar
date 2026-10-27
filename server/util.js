@@ -16,15 +16,42 @@ function normalizeDateTime(s) {
 }
 
 const MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+const MONTHS_GEN = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
-// '2027-04' → 'апрель 2027'
-function monthYear(ym) {
+function lastDay(y, m) {
+  return new Date(y, m, 0).getDate();
+}
+
+function parts(date) {
+  const [y, m, d] = date.split('-').map(Number);
+  return { y, m, d };
+}
+
+// '2027-04' → первый и последний день месяца
+function monthStart(ym) {
+  return `${ym}-01`;
+}
+function monthEnd(ym) {
   const [y, m] = ym.split('-').map(Number);
-  return `${MONTHS[m - 1]} ${y}`;
+  return `${ym}-${pad(lastDay(y, m))}`;
 }
 
-function isMonth(s) {
-  return typeof s === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(s);
+function isDate(s) {
+  if (typeof s !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const { y, m, d } = parts(s);
+  return m >= 1 && m <= 12 && d >= 1 && d <= lastDay(y, m);
 }
 
-module.exports = { nowLocal, normalizeDateTime, monthYear, isMonth };
+// Этап целыми месяцами показывается как раньше: «апрель 2027», «январь 2027 – март 2027».
+// Иначе — с днями: «15 апреля 2027», «15 января 2027 – 20 марта 2027»
+function rangeText(from, to) {
+  const a = parts(from), b = parts(to);
+  if (a.d === 1 && b.d === lastDay(b.y, b.m)) {
+    const s = `${MONTHS[a.m - 1]} ${a.y}`, e = `${MONTHS[b.m - 1]} ${b.y}`;
+    return s === e ? s : `${s} – ${e}`;
+  }
+  const s = `${a.d} ${MONTHS_GEN[a.m - 1]} ${a.y}`, e = `${b.d} ${MONTHS_GEN[b.m - 1]} ${b.y}`;
+  return s === e ? s : `${s} – ${e}`;
+}
+
+module.exports = { nowLocal, normalizeDateTime, lastDay, monthStart, monthEnd, isDate, rangeText };

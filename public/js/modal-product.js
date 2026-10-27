@@ -1,10 +1,10 @@
 // Окно «Новый продукт» / «Редактирование продукта» (только администратор)
-import { MNOM, esc, api, ym, ymStr, capitalize, statusCss, swatchCss, contrastText, ICON, SR } from './common.js';
+import { esc, api, dateStr, nextDay, stageSpan, statusCss, swatchCss, contrastText, ICON, SR } from './common.js';
 
 const INPUT = 'height: 44px; border: 1px solid #8A8AC2; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 15px; font-weight: 400; color: #000000;';
 const FIELD = 'display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: #44445C;';
 const ROW_INPUT = 'width: 100%; box-sizing: border-box; height: 44px; border: 1px solid #8A8AC2; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 15px; color: #000000;';
-const ROW_SELECT = 'width: 100%; height: 44px; border: 1px solid #8A8AC2; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 15px; color: #000000; background: #FFFFFF;';
+const ROW_DATE = 'width: 100%; box-sizing: border-box; height: 44px; border: 1px solid #8A8AC2; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 15px; color: #000000; background: #FFFFFF;';
 const STAGE_GRID = 'display: grid; grid-template-columns: minmax(0, 1.4fr) 1fr 1fr 40px; gap: 10px;';
 const TEAM_GRID = 'display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.4fr) 40px; gap: 10px;';
 const CONTACT_HINTS = ['https://t.me/…', 'имя@yadro.com'];
@@ -33,20 +33,14 @@ export async function openProductModal(state, { year, productId = null, directio
     reason: '',
   };
 
-  const monthOptions = [];
-  for (let y = year - 1; y <= year + 2; y++) for (let m = 1; m <= 12; m++) monthOptions.push(ymStr(y, m));
-
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
   overlay.style.cssText = 'position: fixed; inset: 0; overflow-y: auto; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: flex-start; padding: 56px 16px; box-sizing: border-box; z-index: 20; font-family: \'TT Norms Pro\', Manrope, system-ui, sans-serif; color: #000000;';
   document.body.appendChild(overlay);
 
-  function monthSelect(value, label) {
-    const opts = monthOptions.includes(value) ? monthOptions : [...monthOptions, value].sort();
-    return `<label><span style="${SR}">${esc(label)}</span><select data-role="stage-month" style="${ROW_SELECT}">${opts.map((v) => {
-      const { y, m } = ym(v);
-      return `<option value="${v}"${v === value ? ' selected' : ''}>${capitalize(MNOM[m - 1])} ${y}</option>`;
-    }).join('')}</select></label>`;
+  // Дата этапа — нативный календарь браузера
+  function dateInput(role, i, value, label) {
+    return `<label><span style="${SR}">${esc(label)}</span><input type="date" data-role="${role}" data-i="${i}" value="${value}" min="2000-01-01" max="2099-12-31" required style="${ROW_DATE}"></label>`;
   }
 
   function stagesHtml() {
@@ -55,8 +49,8 @@ export async function openProductModal(state, { year, productId = null, directio
       return `
           <div data-stage="${i}" style="${STAGE_GRID} align-items: center;">
             <div style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 12px; border-radius: 8px; background: #F2F2FE;"><span style="${stageChip(s)}"></span><span style="font-size: 15px;">${esc(s.name)}</span></div>
-            ${monthSelect(st.from, 'Начало этапа ' + s.name).replace('data-role="stage-month"', `data-role="stage-from" data-i="${i}"`)}
-            ${monthSelect(st.to, 'Конец этапа ' + s.name).replace('data-role="stage-month"', `data-role="stage-to" data-i="${i}"`)}
+            ${dateInput('stage-from', i, st.from, 'Начало этапа ' + s.name)}
+            ${dateInput('stage-to', i, st.to, 'Конец этапа ' + s.name)}
             ${rowButton('remove-stage', 'Убрать этап ' + s.name, i)}
           </div>`;
     }).join('');
@@ -65,11 +59,10 @@ export async function openProductModal(state, { year, productId = null, directio
   function previewHtml() {
     return model.stages.map((st) => {
       const s = state.statusById[st.statusId];
-      const a = ym(st.from), b = ym(st.to);
-      if (a.y > year || b.y < year) return '';
-      const from = a.y < year ? 1 : a.m, to = b.y > year ? 12 : b.m;
+      const c = stageSpan(st, year);
+      if (!c) return '';
       return `
-            <div style="grid-column: ${from} / ${to + 1}; height: 24px; border-radius: 3px; ${statusCss(s)} font-size: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap;">${esc(s.name)}</div>`;
+            <div style="${c.css}${c.margin} height: 24px; border-radius: 3px; ${statusCss(s)} font-size: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap;">${esc(s.name)}</div>`;
     }).join('');
   }
 
@@ -118,12 +111,12 @@ export async function openProductModal(state, { year, productId = null, directio
       </label>
 
       <div style="display: flex; flex-direction: column; gap: 10px;">
-        <div style="display: flex; align-items: baseline; gap: 10px;"><span style="font-size: 18px;">Этапы и сроки</span><span style="font-size: 13px; color: #5C5C73;">с точностью до месяца</span></div>
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span style="font-size: 18px;">Этапы и сроки</span><span style="font-size: 13px; color: #5C5C73;">с точностью до дня</span></div>
         <div style="${STAGE_GRID} font-size: 13px; color: #5C5C73; padding: 0 2px;"><span>Статус</span><span>С</span><span>По</span><span></span></div>${stagesHtml()}
         <button type="button" data-action="add-stage"${canAdd ? '' : ' disabled'} style="align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 4px; border: 0; background: transparent; font: inherit; font-size: 14px; color: #0000FF; cursor: pointer;${canAdd ? '' : ' cursor: default;'}">${ICON.plus16}Добавить этап</button>
         <div style="display: flex; flex-direction: column; gap: 6px; background: #F2F2FE; border-radius: 8px; padding: 14px;">
           <span style="font-size: 13px; color: #44445C;">Так продукт будет выглядеть в календаре ${year}</span>
-          <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px;">${previewHtml()}
+          <div data-role="preview" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px;">${previewHtml()}
           </div>
         </div>
       </div>
@@ -175,8 +168,10 @@ export async function openProductModal(state, { year, productId = null, directio
     const role = t.dataset.role;
     if (role === 'direction') model.directionId = Number(t.value) || null;
     else if (role === 'stage-from' || role === 'stage-to') {
+      // Пустое поле (дату стёрли) не сохраняем. Окно целиком не перерисовываем, чтобы не сбить ввод даты
+      if (!t.value) return;
       model.stages[Number(t.dataset.i)][role === 'stage-from' ? 'from' : 'to'] = t.value;
-      render();
+      overlay.querySelector('[data-role="preview"]').innerHTML = previewHtml();
     }
   });
 
@@ -189,12 +184,9 @@ export async function openProductModal(state, { year, productId = null, directio
       case 'add-stage': {
         const s = unusedStatus();
         if (!s) break;
+        // Новый этап начинается на следующий день после последнего, иначе — 1 января выбранного года
         const last = model.stages.map((st) => st.to).sort().pop();
-        let from = ymStr(year, 1);
-        if (last) {
-          const { y, m } = ym(last);
-          from = m === 12 ? ymStr(y + 1, 1) : ymStr(y, m + 1);
-        }
+        const from = last ? nextDay(last) : dateStr(year, 1, 1);
         model.stages.push({ statusId: s.id, from, to: from });
         render();
         break;

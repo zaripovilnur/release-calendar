@@ -6,7 +6,7 @@ const multer = require('multer');
 const config = require('./config');
 const { open } = require('./db');
 const { sessionMiddleware, requireAdmin, authRouter } = require('./auth');
-const { nowLocal, monthYear, isMonth } = require('./util');
+const { nowLocal, isDate, rangeText } = require('./util');
 
 const CATEGORIES = ['Презентации', 'Макеты', 'Визуалы', 'Документы', 'Тексты', 'Планы', 'Сайт'];
 const EMPLOYEE_AUTHOR = 'Сотрудник';
@@ -77,7 +77,7 @@ function materialRows(where = '', params = []) {
 api.get('/state', (req, res) => {
   const directions = db.prepare('SELECT id, name, sort FROM directions ORDER BY sort, id').all();
   const statuses = db.prepare('SELECT * FROM statuses ORDER BY sort, id').all().map(statusRow);
-  const stages = db.prepare('SELECT product_id, status_id, from_month, to_month FROM stages ORDER BY from_month, id').all();
+  const stages = db.prepare('SELECT product_id, status_id, from_date, to_date FROM stages ORDER BY from_date, id').all();
   const counts = db.prepare("SELECT product_id, SUM(kind = 'link') AS links, SUM(kind = 'file') AS files FROM materials GROUP BY product_id").all();
   const countBy = Object.fromEntries(counts.map((c) => [c.product_id, c]));
   const products = db.prepare('SELECT id, name, direction_id, description FROM products ORDER BY id').all().map((p) => ({
@@ -85,7 +85,7 @@ api.get('/state', (req, res) => {
     name: p.name,
     directionId: p.direction_id,
     description: p.description,
-    stages: stages.filter((s) => s.product_id === p.id).map((s) => ({ statusId: s.status_id, from: s.from_month, to: s.to_month })),
+    stages: stages.filter((s) => s.product_id === p.id).map((s) => ({ statusId: s.status_id, from: s.from_date, to: s.to_date })),
     links: countBy[p.id] ? countBy[p.id].links : 0,
     files: countBy[p.id] ? countBy[p.id].files : 0,
   }));
@@ -181,8 +181,8 @@ api.delete('/statuses/:id', requireAdmin, (req, res) => {
 
 // ---------- Продукты (администратор) ----------
 
-function rangeText(st) {
-  return st.from === st.to ? monthYear(st.from) : `${monthYear(st.from)} – ${monthYear(st.to)}`;
+function stageText(st) {
+  return rangeText(st.from, st.to);
 }
 
 // Текст записи истории: что поменялось в сроках. Пустая строка — сроки не менялись
@@ -190,8 +190,8 @@ function stagesDiff(oldStages, newStages) {
   const statuses = db.prepare('SELECT * FROM statuses ORDER BY is_release DESC, sort, id').all();
   const parts = [];
   for (const s of statuses) {
-    const a = oldStages.filter((x) => x.statusId === s.id).map(rangeText).join(', ');
-    const b = newStages.filter((x) => x.statusId === s.id).map(rangeText).join(', ');
+    const a = oldStages.filter((x) => x.statusId === s.id).map(stageText).join(', ');
+    const b = newStages.filter((x) => x.statusId === s.id).map(stageText).join(', ');
     if (a !== b) parts.push(`${s.name}: ${a || 'нет'} → ${b || 'нет'}`);
   }
   return parts.join('; ');
@@ -207,7 +207,7 @@ function parseProduct(body) {
   for (const s of Array.isArray(b.stages) ? b.stages : []) {
     const statusId = toId(s.statusId);
     if (!statusId || !db.prepare('SELECT 1 FROM statuses WHERE id = ?').get(statusId)) return { error: 'Неизвестный статус' };
-    if (!isMonth(s.from) || !isMonth(s.to)) return { error: 'Неверный месяц' };
+    if (!isDate(s.from) || !isDate(s.to)) return { error: 'Неверная дата' };
     if (s.from > s.to) return { error: 'Дата начала этапа позже даты окончания' };
     stages.push({ statusId, from: s.from, to: s.to });
   }
@@ -223,7 +223,7 @@ function parseProduct(body) {
 
 function writeChildren(id, p) {
   db.prepare('DELETE FROM stages WHERE product_id = ?').run(id);
-  const insStage = db.prepare('INSERT INTO stages (product_id, status_id, from_month, to_month) VALUES (?, ?, ?, ?)');
+  const insStage = db.prepare('INSERT INTO stages (product_id, status_id, from_date, to_date) VALUES (?, ?, ?, ?)');
   for (const s of p.stages) insStage.run(id, s.statusId, s.from, s.to);
   db.prepare('DELETE FROM team_members WHERE product_id = ?').run(id);
   const insMember = db.prepare('INSERT INTO team_members (product_id, full_name, role, contact_url, sort) VALUES (?, ?, ?, ?, ?)');
@@ -231,8 +231,8 @@ function writeChildren(id, p) {
 }
 
 function productStages(id) {
-  return db.prepare('SELECT status_id, from_month, to_month FROM stages WHERE product_id = ? ORDER BY from_month, id').all(id)
-    .map((s) => ({ statusId: s.status_id, from: s.from_month, to: s.to_month }));
+  return db.prepare('SELECT status_id, from_date, to_date FROM stages WHERE product_id = ? ORDER BY from_date, id').all(id)
+    .map((s) => ({ statusId: s.status_id, from: s.from_date, to: s.to_date }));
 }
 
 api.post('/products', requireAdmin, (req, res) => {
@@ -247,7 +247,7 @@ api.post('/products', requireAdmin, (req, res) => {
     const ga = release && p.stages.find((s) => s.statusId === release.id);
     if (ga) {
       db.prepare('INSERT INTO date_history (product_id, text, reason, author, created_at) VALUES (?, ?, ?, ?, ?)')
-        .run(newId, `Сроки внесены: GA — ${monthYear(ga.from)}`, p.reason, author(req), now);
+        .run(newId, `Сроки внесены: GA — ${rangeText(ga.from, ga.to)}`, p.reason, author(req), now);
     }
     return newId;
   })();

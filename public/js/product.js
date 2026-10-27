@@ -1,6 +1,6 @@
 import {
-  MSHORT, MGEN, MLOWER, KEY_PRE, KEY_SUPPORT, esc, plural, ym, today, api, isMobile, onMobileChange,
-  loadState, gaStage, stageOf, selectedYear, monthName, rangeName, swatchCss, shortDate, categoryShort, fileExt,
+  MSHORT, KEY_PRE, KEY_SUPPORT, esc, plural, ym, today, api, isMobile, onMobileChange,
+  loadState, gaStage, stageOf, selectedYear, rangeName, sinceName, stageSpan, swatchCss, shortDate, categoryShort, fileExt,
   stripExt, collapsedNav, ICON,
 } from './common.js';
 import { openMaterialModal } from './modal-material.js';
@@ -40,11 +40,10 @@ function cardYear() {
 function strip(year, height) {
   return product.stages.map((st) => {
     const s = state.statusById[st.statusId];
-    const a = ym(st.from), b = ym(st.to);
-    if (!s || a.y > year || b.y < year) return '';
-    const from = a.y < year ? 1 : a.m, to = b.y > year ? 12 : b.m;
+    const c = stageSpan(st, year);
+    if (!s || !c) return '';
     return `
-            <div style="grid-column: ${from} / ${to + 1}; height: ${height}px; border-radius: 2px; ${swatchCss(s)}"></div>`;
+            <div style="${c.css}${c.margin} height: ${height}px; border-radius: 2px; ${swatchCss(s)}${c.partial ? ' min-width: 3px;' : ''}"></div>`;
   }).join('');
 }
 
@@ -68,8 +67,8 @@ function renderDesktop() {
 
   const plaques = [
     pre ? `<div style="background: #F2F2FE; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; color: #44445C;">Pre-GA</span><span style="font-size: 20px;">${esc(rangeName(pre, year))}</span></div>` : '',
-    ga ? `<div style="background: #0000FF; color: #FFFFFF; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px;">Выход в GA</span><span style="font-size: 20px;">${esc(monthName(ga.from, null))}</span><span style="font-size: 13px;">${countdown(ga)}</span></div>` : '',
-    sup ? `<div style="background: #F2F2FE; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; color: #44445C;">Поддержка продаж</span><span style="font-size: 20px;">с ${esc(monthName(sup.from, year, MGEN))}</span></div>` : '',
+    ga ? `<div style="background: #0000FF; color: #FFFFFF; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px;">Выход в GA</span><span style="font-size: 20px;">${esc(rangeName(ga, null))}</span><span style="font-size: 13px;">${countdown(ga)}</span></div>` : '',
+    sup ? `<div style="background: #F2F2FE; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; color: #44445C;">Поддержка продаж</span><span style="font-size: 20px;">с ${esc(sinceName(sup, year))}</span></div>` : '',
   ].filter(Boolean).join('\n          ');
 
   const pins = pinnedLinks().map((m) => {
@@ -205,9 +204,9 @@ function renderMobile() {
     ? `<div style="background: #0000FF; color: #FFFFFF; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px;">${label}</span><span style="font-size: 14px;">${esc(value)}</span></div>`
     : `<div style="background: #F2F2FE; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px; color: #44445C;">${label}</span><span style="font-size: 14px;">${esc(value)}</span></div>`;
   const plaques = [
-    pre ? plaque('Pre-GA', rangeName(pre, year, MLOWER), false) : '',
-    ga ? plaque('GA', monthName(ga.from, year), true) : '',
-    sup ? plaque('Поддержка', 'с ' + monthName(sup.from, year, MGEN), false) : '',
+    pre ? plaque('Pre-GA', rangeName(pre, year, true), false) : '',
+    ga ? plaque('GA', rangeName(ga, year, true), true) : '',
+    sup ? plaque('Поддержка', 'с ' + sinceName(sup, year, true), false) : '',
   ].filter(Boolean).join('\n      ');
   const links = pinnedLinks().map((m) => {
     const inner = `

@@ -66,7 +66,6 @@ function materialRows(where = '', params = []) {
     title: m.title,
     url: m.url,
     category: m.category,
-    pinned: !!m.pinned,
     note: m.note,
     version: m.kind === 'file' ? m.version : null,
     author: m.kind === 'file' && m.v_author ? m.v_author : m.author,
@@ -325,8 +324,9 @@ api.post('/materials/link', (req, res) => {
     return bad(res, 'Введите адрес ссылки');
   }
   const title = String(b.title || '').trim() || url.hostname;
-  const id = db.prepare('INSERT INTO materials (product_id, kind, title, url, category, pinned, note, author, created_at) VALUES (?, \'link\', ?, ?, ?, ?, NULL, ?, ?)')
-    .run(productId, title, url.href, b.category, b.pinned ? 1 : 0, author(req), nowLocal()).lastInsertRowid;
+  // Каждая ссылка сразу видна в карточке продукта — галочки «Закрепить» больше нет
+  const id = db.prepare('INSERT INTO materials (product_id, kind, title, url, category, pinned, note, author, created_at) VALUES (?, \'link\', ?, ?, ?, 1, NULL, ?, ?)')
+    .run(productId, title, url.href, b.category, author(req), nowLocal()).lastInsertRowid;
   res.json({ id });
 });
 

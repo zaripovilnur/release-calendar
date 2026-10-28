@@ -15,7 +15,6 @@ export function openMaterialModal(state, { productId = null, tab = 'link', files
     productId: productId || (products[0] && products[0].id) || null,
     linkCategory: state.categories[0],
     fileCategory: state.categories[0],
-    pinned: true,
     queue: [],
     uploading: false,
     busy: false, // идёт сохранение ссылки — повторное нажатие «Добавить» не создаёт дубль
@@ -73,8 +72,7 @@ export function openMaterialModal(state, { productId = null, tab = 'link', files
       <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
         ${productSelect()}
         ${categorySelect(m.linkCategory)}
-      </div>
-      <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; min-height: 32px; cursor: pointer;"><input type="checkbox" data-role="pinned"${m.pinned ? ' checked' : ''} style="width: 18px; height: 18px; accent-color: #0000FF; margin: 0;">Закрепить в карточке продукта</label>`;
+      </div>`;
   }
 
   function versionOf(name) {
@@ -217,7 +215,6 @@ export function openMaterialModal(state, { productId = null, tab = 'link', files
     if (role === 'url') fetchTitle();
     else if (role === 'product') { m.productId = Number(t.value); loadExisting(m.productId); render(); }
     else if (role === 'category') { if (m.tab === 'link') m.linkCategory = t.value; else m.fileCategory = t.value; }
-    else if (role === 'pinned') m.pinned = t.checked;
   });
 
   // Название по ссылке подставляем и при вставке адреса, не дожидаясь ухода из поля
@@ -265,7 +262,7 @@ export function openMaterialModal(state, { productId = null, tab = 'link', files
       if (m.busy) return;
       m.busy = true;
       try {
-        await api('/api/materials/link', { method: 'POST', body: { url: m.url.trim(), title: m.title, productId: m.productId, category: m.linkCategory, pinned: m.pinned } });
+        await api('/api/materials/link', { method: 'POST', body: { url: m.url.trim(), title: m.title, productId: m.productId, category: m.linkCategory } });
         m.uploaded += 1;
         close();
       } catch (err) {

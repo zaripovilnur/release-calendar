@@ -73,7 +73,7 @@ function releaseButton() {
 
 const gaBackground = () => (product.releasedAt ? RELEASED_GREEN : '#0000FF');
 
-const pinnedLinks = () => details.materials.filter((m) => m.kind === 'link' && m.pinned);
+const links = () => details.materials.filter((m) => m.kind === 'link');
 const files = () => details.materials.filter((m) => m.kind === 'file');
 
 // ---------- Компьютер ----------
@@ -91,7 +91,7 @@ function renderDesktop() {
     sup ? `<div style="background: #F2F2FE; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; color: #44445C;">Поддержка продаж</span><span style="font-size: 20px;">с ${esc(sinceName(sup, year))}</span></div>` : '',
   ].filter(Boolean).join('\n          ');
 
-  const pins = pinnedLinks().map((m) => {
+  const pins = links().map((m) => {
     const tile = `
                 <a href="${esc(m.url)}" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 10px; background: #F2F2FE; border-radius: 8px; padding: 16px; color: #000000; text-decoration: none;">
                   <div style="display: flex; align-items: center; justify-content: space-between;"><span style="font-size: 12px; font-weight: 500; color: #0000FF;">${esc(m.category)}</span>${ICON.arrowUpRight14}</div>
@@ -228,7 +228,7 @@ function renderMobile() {
     ga ? plaque('GA', rangeName(ga, year), true) : '',
     sup ? plaque('Поддержка', 'с ' + sinceName(sup, year, true), false) : '',
   ].filter(Boolean).join('\n      ');
-  const links = pinnedLinks().map((m) => {
+  const linkRows = links().map((m) => {
     const inner = `
         <span style="flex: none; width: 40px; height: 40px; border-radius: 6px; background: #F2F2FE; color: #0000FF; font-size: 10px; font-weight: 500; display: flex; align-items: center; justify-content: center;">${esc(categoryShort(m.category))}</span>
         <span style="font-size: 15px; margin-right: auto;">${esc(m.title)}</span>
@@ -267,7 +267,7 @@ function renderMobile() {
   </div>
 
   <div style="flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 10px;">
-    <div style="display: flex; align-items: center; padding: 0 2px;"><span style="font-size: 18px; margin-right: auto;">Ссылки</span><button type="button" data-action="add-link" aria-label="Добавить материал" style="width: 40px; height: 40px; padding: 0; border: 0; border-radius: 8px; background: #0000FF; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button></div>${links}
+    <div style="display: flex; align-items: center; padding: 0 2px;"><span style="font-size: 18px; margin-right: auto;">Ссылки</span><button type="button" data-action="add-link" aria-label="Добавить материал" style="width: 40px; height: 40px; padding: 0; border: 0; border-radius: 8px; background: #0000FF; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button></div>${linkRows}
     <span style="font-size: 18px; padding: 8px 2px 0;">Файлы</span>${fileRows}
   </div>
 </div>`;

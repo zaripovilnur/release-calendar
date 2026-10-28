@@ -120,6 +120,8 @@ function open() {
   migrateStagesToDates(db);
   db.exec(SCHEMA);
   addReleasedAt(db);
+  // Галочки «Закрепить в карточке» больше нет: ссылки, добавленные без неё, тоже показываем в карточке
+  db.prepare("UPDATE materials SET pinned = 1 WHERE kind = 'link' AND pinned = 0").run();
   // Тип «Планы» заменён на «Другое»
   db.prepare("UPDATE materials SET category = 'Другое' WHERE category = 'Планы'").run();
   return db;
